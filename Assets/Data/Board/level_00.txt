@@ -1,0 +1,13 @@
+- - P S P - - - - - - - - - - - - - - -
+- - P P P T T - - - - - - - - - - - - -
+- - P P P T T - - - - - - - - - - - - -
+- T T P P P - T T - - - - - - - - - - -
+- T T P P P P T T - - - - - - T T - - -
+- - - - - P P P P - - T T - - T T - P P
+- T T - - T T P P - - T T - - - P P P D
+- T T - - T T P P P P P P P P P P P P P
+P P P P P P P P P P P P P P P P P P T T
+S P P P P P P P P P P P P P P P T T T T
+P P P P P P P T T - - T T - - - T T - -
+- T T - T T - T T - - T T - - - - - - -
+- T T - T T - - - - - - - - - - - - - -
