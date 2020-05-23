@@ -12,13 +12,13 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private GameObject defenseBlock;
     [SerializeField] private GameObject buildBlock;
     [SerializeField] private GameObject notPlayableBlock;
+    [SerializeField] private String levelFilePath;
 
     private int blockSide = 2;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        var board = ReadBoard("Assets/Data/Board/level_00.txt");
+        var board = ReadBoard(levelFilePath);
         var rowNumber = board.Count;
         var columnNumber = board[0].Count;
 
@@ -27,7 +27,7 @@ public class BoardBuilder : MonoBehaviour
             for (var j = 0; j < columnNumber; j++)
             {
                 Instantiate(getBlock(board[i][j]))
-                    .transform.position = new Vector3(i * 2, 0, j * 2);
+                    .transform.position = new Vector3(i * blockSide, 0, j * blockSide);
             }
         }
     }
