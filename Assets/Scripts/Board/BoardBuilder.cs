@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,9 +11,9 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private GameObject defenseBlock;
     [SerializeField] private GameObject buildBlock;
     [SerializeField] private GameObject notPlayableBlock;
-    [SerializeField] private String levelFilePath;
+    [SerializeField] private string levelFilePath;
 
-    private int blockSide = 2;
+    private const int BlockSide = 2;
 
     private void Start()
     {
@@ -26,13 +25,16 @@ public class BoardBuilder : MonoBehaviour
         {
             for (var j = 0; j < columnNumber; j++)
             {
-                Instantiate(getBlock(board[i][j]))
-                    .transform.position = new Vector3(i * blockSide, 0, j * blockSide);
+                var x = Instantiate(
+                    GetBlock(board[i][j]),
+                    new Vector3(i * BlockSide, 0, j * BlockSide),
+                    Quaternion.identity
+                );
             }
         }
     }
 
-    private static List<List<char>> ReadBoard(String filePath)
+    private static List<List<char>> ReadBoard(string filePath)
     {
         var reader = new StreamReader(filePath);
         var lines = reader.ReadToEnd().Split(
@@ -42,12 +44,12 @@ public class BoardBuilder : MonoBehaviour
         reader.Close();
 
         return lines
-            .Select(line => line.Split(new[] {' '})
+            .Select(line => line.Split(' ')
                 .Select(s => s[0]).ToList())
             .ToList();
     }
 
-    private GameObject getBlock(char type)
+    private GameObject GetBlock(char type)
     {
         switch (type)
         {
