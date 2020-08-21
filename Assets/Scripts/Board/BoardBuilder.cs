@@ -27,7 +27,7 @@ public class BoardBuilder : MonoBehaviour
             {
                 var x = Instantiate(
                     GetBlock(board[i][j]),
-                    new Vector3(i * BlockSide, 0, j * BlockSide),
+                    new Vector3((i + 1) * BlockSide, 0, (j + 1) * BlockSide),
                     Quaternion.identity
                 );
             }
