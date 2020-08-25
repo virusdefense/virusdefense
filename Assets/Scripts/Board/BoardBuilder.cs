@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using Utils;
+using Utils.Path.AStar;
 
 public class BoardBuilder : MonoBehaviour
 {
@@ -15,24 +17,96 @@ public class BoardBuilder : MonoBehaviour
 
     private const int BlockSide = 2;
 
+    private PathFinding _pathFinding;
+    private List<List<PathNode>> paths = new List<List<PathNode>>();
+
     private void Start()
     {
         var board = ReadBoard(levelFilePath);
         var rowNumber = board.Count;
         var columnNumber = board[0].Count;
 
+        var spawnPoints = new List<Vector2Int>();
+        var defensePoints = new List<Vector2Int>();
+
+        var pathGrid = new PathNode[rowNumber, columnNumber];
+
         for (var i = 0; i < rowNumber; i++)
         {
             for (var j = 0; j < columnNumber; j++)
             {
+                var type = board[i][j];
+
                 var x = Instantiate(
-                    GetBlock(board[i][j]),
+                    GetBlock(type),
                     new Vector3((i + 1) * BlockSide, 0, (j + 1) * BlockSide),
                     Quaternion.identity
                 );
+
+                var isWalkable = type == 'P' || type == 'S' || type == 'D';
+
+                if (type == 'S')
+                    spawnPoints.Add(new Vector2Int(i, j));
+                else if (type == 'D')
+                    defensePoints.Add(new Vector2Int(i, j));
+
+                pathGrid[i, j] = new PathNode(i, j, isWalkable);
             }
         }
+        
+        _pathFinding = new PathFinding(pathGrid, isDebug: true);
+
+        foreach (var spawnPoint in spawnPoints)
+        {
+            foreach (var defensePoint in defensePoints)
+            {
+                paths.Add(_pathFinding.FindPath(spawnPoint, defensePoint));
+            }
+        }
+
+        foreach (var path in paths)
+        {
+            if (path == null)
+                continue;
+                
+            Debug.Log("Path:");
+            for (var i = 0; i < path.Count - 1; i++)
+            {
+                Debug.Log($"\tx: {path[i].X}, Y: {path[i].Y}");
+                Debug.DrawLine(
+                    path[i].RealWorldPosition() + Vector3.one,
+                    path[i + 1].RealWorldPosition() + Vector3.one,
+                    Color.green,
+                    10f
+                );
+            }
+    
+            Debug.Log("============"); 
+        }
     }
+    
+    private void Update()
+            {
+                if (!Input.GetMouseButtonDown(0)) return;
+                if (!Mouse.GetMouseWorldPosition(out var position)) return;
+    
+    
+                var path = _pathFinding.FindPath(new Vector3(2, 0, 8), position);
+    
+                Debug.Log("Path:");
+                for (var i = 0; i < path.Count - 1; i++)
+                {
+                    Debug.Log($"\tx: {path[i].X}, Y: {path[i].Y}");
+                    Debug.DrawLine(
+                        path[i].RealWorldPosition() + Vector3.one,
+                        path[i + 1].RealWorldPosition() + Vector3.one,
+                        Color.green,
+                        2f
+                    );
+                }
+    
+                Debug.Log("============");
+            }
 
     private static List<List<char>> ReadBoard(string filePath)
     {

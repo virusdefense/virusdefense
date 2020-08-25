@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Utils
@@ -9,6 +10,9 @@ namespace Utils
         private int width;
         private int height;
         private T[,] gridArray;
+
+        public int Width => width;
+        public int Height => height;
 
         public Grid(T[,] gridArray, int cellSide, Vector3 origin = default, bool isDebug = false)
         {
@@ -68,9 +72,46 @@ namespace Utils
         {
             var relativePosition = position - origin;
             // Mathf.FloorToInt
-            var x = Mathf.RoundToInt(relativePosition.x / cellSide);
-            var z = Mathf.RoundToInt(relativePosition.z / cellSide);
+            var x = Mathf.RoundToInt(relativePosition.x / cellSide) - 1;
+            var z = Mathf.RoundToInt(relativePosition.z / cellSide) - 1;
             return new Vector2Int(x, z);
+        }
+
+        public List<T> GetNeighbour(int x, int y)
+        {
+            var neighbourList = new List<T>();
+            if (x - 1 >= 0)
+            {
+                // Left
+                neighbourList.Add(gridArray[x - 1, y]);
+                // Left Down
+                if (y + 1 < height)
+                    neighbourList.Add(gridArray[x - 1, y + 1]);
+                // Left Up
+                if (y - 1 >= 0)
+                    neighbourList.Add(gridArray[x - 1, y - 1]);
+            }
+
+            if (x + 1 < width)
+            {
+                // Right
+                neighbourList.Add(gridArray[x + 1, y]);
+                // Right Down
+                if (y + 1 < height)
+                    neighbourList.Add(gridArray[x + 1, y + 1]);
+                // Right Up
+                if (y - 1 >= 0)
+                    neighbourList.Add(gridArray[x + 1, y - 1]);
+            }
+
+            // Down
+            if (y + 1 < height)
+                neighbourList.Add(gridArray[x, y + 1]);
+            // Up
+            if (y - 1 >= 0)
+                neighbourList.Add(gridArray[x, y - 1]);
+            
+            return neighbourList;
         }
 
         private void PrintGrid()

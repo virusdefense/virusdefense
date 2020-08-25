@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 834551736444081088}
   - component: {fileID: 834551736444081103}
-  - component: {fileID: 5770686602211344989}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -55,15 +54,3 @@ MonoBehaviour:
   notPlayableBlock: {fileID: 6054957069123047953, guid: d7133c3b43d70de6d8acb61b5c4eb177,
     type: 3}
   levelFilePath: Assets/Data/Board/level_00.txt
---- !u!114 &5770686602211344989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834551736444081102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cda397c39e906828809c40c6ee8ccf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
