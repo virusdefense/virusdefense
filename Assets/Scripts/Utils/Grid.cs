@@ -5,22 +5,21 @@ namespace Utils
 {
     public class Grid<T>
     {
-        private int cellSide;
-        private Vector3 origin;
-        private int width;
-        private int height;
-        private T[,] gridArray;
+        private readonly int _cellSide;
+        private readonly Vector3 _origin;
+        private readonly T[,] _gridArray;
 
-        public int Width => width;
-        public int Height => height;
+        public int Width { get; }
+
+        public int Height { get; }
 
         public Grid(T[,] gridArray, int cellSide, Vector3 origin = default, bool isDebug = false)
         {
-            this.cellSide = cellSide;
-            this.origin = origin;
-            this.gridArray = gridArray;
-            width = gridArray.GetLength(0);
-            height = gridArray.GetLength(1);
+            _cellSide = cellSide;
+            _origin = origin;
+            _gridArray = gridArray;
+            Width = gridArray.GetLength(0);
+            Height = gridArray.GetLength(1);
 
             if (isDebug)
                 PrintGrid();
@@ -28,12 +27,12 @@ namespace Utils
 
         public Grid(int width, int height, int cellSide, Vector3 origin = default, bool isDebug = false)
         {
-            this.width = width;
-            this.height = height;
-            this.cellSide = cellSide;
-            this.origin = origin;
+            Width = width;
+            Height = height;
+            _cellSide = cellSide;
+            _origin = origin;
 
-            gridArray = new T[width, height];
+            _gridArray = new T[width, height];
 
             if (isDebug)
                 PrintGrid();
@@ -41,8 +40,8 @@ namespace Utils
 
         public T this[int i, int j]
         {
-            get => gridArray[i, j];
-            set => gridArray[i, j] = value;
+            get => _gridArray[i, j];
+            set => _gridArray[i, j] = value;
         }
 
         public T this[Vector3 position]
@@ -54,26 +53,26 @@ namespace Utils
         private T GetValue(Vector3 position)
         {
             var cell = GetGridCords(position);
-            return gridArray[cell.x, cell.y];
+            return _gridArray[cell.x, cell.y];
         }
 
         private void SetValue(Vector3 position, T value)
         {
             var cell = GetGridCords(position);
-            gridArray[cell.x, cell.y] = value;
+            _gridArray[cell.x, cell.y] = value;
         }
 
         public Vector3 GetRealWorldPosition(int x, int z)
         {
-            return new Vector3(x + 0.5f, 0, z + 0.5f) * cellSide + origin;
+            return new Vector3(x + 0.5f, 0, z + 0.5f) * _cellSide + _origin;
         }
 
         public Vector2Int GetGridCords(Vector3 position)
         {
-            var relativePosition = position - origin;
+            var relativePosition = position - _origin;
             // Mathf.FloorToInt
-            var x = Mathf.RoundToInt(relativePosition.x / cellSide) - 1;
-            var z = Mathf.RoundToInt(relativePosition.z / cellSide) - 1;
+            var x = Mathf.RoundToInt(relativePosition.x / _cellSide) - 1;
+            var z = Mathf.RoundToInt(relativePosition.z / _cellSide) - 1;
             return new Vector2Int(x, z);
         }
 
@@ -83,50 +82,50 @@ namespace Utils
             if (x - 1 >= 0)
             {
                 // Left
-                neighbourList.Add(gridArray[x - 1, y]);
+                neighbourList.Add(_gridArray[x - 1, y]);
                 // Left Down
-                if (y + 1 < height)
-                    neighbourList.Add(gridArray[x - 1, y + 1]);
+                if (y + 1 < Height)
+                    neighbourList.Add(_gridArray[x - 1, y + 1]);
                 // Left Up
                 if (y - 1 >= 0)
-                    neighbourList.Add(gridArray[x - 1, y - 1]);
+                    neighbourList.Add(_gridArray[x - 1, y - 1]);
             }
 
-            if (x + 1 < width)
+            if (x + 1 < Width)
             {
                 // Right
-                neighbourList.Add(gridArray[x + 1, y]);
+                neighbourList.Add(_gridArray[x + 1, y]);
                 // Right Down
-                if (y + 1 < height)
-                    neighbourList.Add(gridArray[x + 1, y + 1]);
+                if (y + 1 < Height)
+                    neighbourList.Add(_gridArray[x + 1, y + 1]);
                 // Right Up
                 if (y - 1 >= 0)
-                    neighbourList.Add(gridArray[x + 1, y - 1]);
+                    neighbourList.Add(_gridArray[x + 1, y - 1]);
             }
 
             // Down
-            if (y + 1 < height)
-                neighbourList.Add(gridArray[x, y + 1]);
+            if (y + 1 < Height)
+                neighbourList.Add(_gridArray[x, y + 1]);
             // Up
             if (y - 1 >= 0)
-                neighbourList.Add(gridArray[x, y - 1]);
-            
+                neighbourList.Add(_gridArray[x, y - 1]);
+
             return neighbourList;
         }
 
         private void PrintGrid()
         {
-            for (var x = 0; x < width; x++)
+            for (var x = 0; x < Width; x++)
             {
-                for (var z = 0; z < height; z++)
+                for (var z = 0; z < Height; z++)
                 {
                     Debug.DrawLine(GetRealWorldPosition(x, z), GetRealWorldPosition(x, z + 1), Color.red, 100f);
                     Debug.DrawLine(GetRealWorldPosition(x, z), GetRealWorldPosition(x + 1, z), Color.red, 100f);
                 }
             }
 
-            Debug.DrawLine(GetRealWorldPosition(0, height), GetRealWorldPosition(width, height), Color.red, 100f);
-            Debug.DrawLine(GetRealWorldPosition(width, 0), GetRealWorldPosition(width, height), Color.red, 100f);
+            Debug.DrawLine(GetRealWorldPosition(0, Height), GetRealWorldPosition(Width, Height), Color.red, 100f);
+            Debug.DrawLine(GetRealWorldPosition(Width, 0), GetRealWorldPosition(Width, Height), Color.red, 100f);
             //GUI.Label(new Rect(0, 0, cellSide, cellSide), "x");
         }
     }

@@ -10,10 +10,10 @@ namespace Utils.Path.AStar
         private const int StraightCost = 10;
         private const int DiagonalCost = 14;
 
-        private int _width;
-        private int _height;
+        private readonly int _width;
+        private readonly int _height;
 
-        private Grid<PathNode> _grid;
+        private readonly Grid<PathNode> _grid;
 
         private List<PathNode> _openList;
         private List<PathNode> _closeList;
@@ -22,7 +22,7 @@ namespace Utils.Path.AStar
         {
             _width = width;
             _height = height;
-            
+
             _grid = new Grid<PathNode>(width, height, 2, isDebug: true);
 
             for (var i = 0; i < width; i++)
@@ -64,7 +64,7 @@ namespace Utils.Path.AStar
         public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
         {
             Reset();
-            
+
             var startNode = _grid[startX, startY];
             var endNode = _grid[endX, endY];
 
@@ -84,11 +84,11 @@ namespace Utils.Path.AStar
                 _openList.Remove(currentNode);
                 _closeList.Add(currentNode);
 
-                foreach (var neighbour in _grid.GetNeighbour(currentNode.X, currentNode.Y))
+                foreach (
+                    var neighbour in _grid.GetNeighbour(currentNode.X, currentNode.Y)
+                        .Where(neighbour => !_closeList.Contains(neighbour))
+                )
                 {
-                    if (_closeList.Contains(neighbour))
-                        continue;
-                    
                     if (!neighbour.IsWalkable)
                     {
                         _closeList.Add(neighbour);
@@ -111,7 +111,7 @@ namespace Utils.Path.AStar
 
         private void Reset()
         {
-            for (var i = 0; i < _width ; i++)
+            for (var i = 0; i < _width; i++)
             {
                 for (var j = 0; j < _height; j++)
                     _grid[i, j].Reset();

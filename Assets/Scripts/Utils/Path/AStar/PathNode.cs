@@ -6,16 +6,16 @@ namespace Utils.Path.AStar
     public class PathNode : IComparable
     {
         public Grid<PathNode> Grid;
-        public int X;
-        public int Y;
-        public bool IsWalkable;
+        public readonly int X;
+        public readonly int Y;
+        public readonly bool IsWalkable;
 
         public int GCost = int.MaxValue;
-        public int HCost = 0;
+        public int HCost;
 
         public int FCost => GCost + HCost;
 
-        public PathNode PreviousNode = null;
+        public PathNode PreviousNode;
 
         public PathNode(int x, int y, bool isWalkable, Grid<PathNode> grid)
         {
