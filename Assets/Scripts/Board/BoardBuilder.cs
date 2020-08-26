@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Board;
 using UnityEngine;
 using Utils;
 using Utils.Path.AStar;
@@ -53,7 +54,7 @@ public class BoardBuilder : MonoBehaviour
                 pathGrid[i, j] = new PathNode(i, j, isWalkable);
             }
         }
-        
+
         _pathFinding = new PathFinding(pathGrid, isDebug: true);
 
         foreach (var spawnPoint in spawnPoints)
@@ -68,7 +69,7 @@ public class BoardBuilder : MonoBehaviour
         {
             if (path == null)
                 continue;
-                
+
             Debug.Log("Path:");
             for (var i = 0; i < path.Count - 1; i++)
             {
@@ -80,33 +81,40 @@ public class BoardBuilder : MonoBehaviour
                     10f
                 );
             }
-    
-            Debug.Log("============"); 
+
+            Debug.Log("============");
         }
+
+        var realWorldPaths = paths
+            .Select(path => path
+                .Select(point => point.RealWorldPosition()).ToList()
+            ).ToList();
+
+        PathManager.GetInstance().Paths = realWorldPaths;
     }
-    
+
     private void Update()
-            {
-                if (!Input.GetMouseButtonDown(0)) return;
-                if (!Mouse.GetMouseWorldPosition(out var position)) return;
-    
-    
-                var path = _pathFinding.FindPath(new Vector3(2, 0, 8), position);
-    
-                Debug.Log("Path:");
-                for (var i = 0; i < path.Count - 1; i++)
-                {
-                    Debug.Log($"\tx: {path[i].X}, Y: {path[i].Y}");
-                    Debug.DrawLine(
-                        path[i].RealWorldPosition() + Vector3.one,
-                        path[i + 1].RealWorldPosition() + Vector3.one,
-                        Color.green,
-                        2f
-                    );
-                }
-    
-                Debug.Log("============");
-            }
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+        if (!Mouse.GetMouseWorldPosition(out var position)) return;
+
+
+        var path = _pathFinding.FindPath(new Vector3(2, 0, 8), position);
+
+        Debug.Log("Path:");
+        for (var i = 0; i < path.Count - 1; i++)
+        {
+            Debug.Log($"\tx: {path[i].X}, Y: {path[i].Y}");
+            Debug.DrawLine(
+                path[i].RealWorldPosition() + Vector3.one,
+                path[i + 1].RealWorldPosition() + Vector3.one,
+                Color.green,
+                2f
+            );
+        }
+
+        Debug.Log("============");
+    }
 
     private static List<List<char>> ReadBoard(string filePath)
     {
