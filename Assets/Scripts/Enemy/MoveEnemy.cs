@@ -8,7 +8,7 @@ namespace Enemy
     public class MoveEnemy : MonoBehaviour
     {
         private List<Vector3> _path;
-        private int _pointIndex;
+        private int _pointIndex = 1;
         private float _speed = 5f;
 
         public void Update()
