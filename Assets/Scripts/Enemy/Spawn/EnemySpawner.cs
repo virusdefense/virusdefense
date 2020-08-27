@@ -14,22 +14,27 @@ namespace Enemy.Spawn
         private Vector3 _spawnPosition;
         private IWave _wave;
 
+        public string FilePath;
+
         public void Start()
         {
             _spawnPosition = transform.position;
             _spawnPosition.y = 0.5f;
-
-            _wave = MakeFakeWave();
         }
 
         public void Update()
         {
-            _wave.Spawn(Time.deltaTime);
+            _wave?.Spawn(Time.deltaTime);
         }
 
         public void Spawn(EnemyType enemyType, int number, float elapseBetweenEnemy)
         {
             StartCoroutine(SpawnCoroutine(enemyType, number, elapseBetweenEnemy));
+        }
+
+        public void ReadWaves(string filePath)
+        {
+            _wave = SpawnParser.Parse(filePath, this);
         }
 
         private IEnumerator SpawnCoroutine(EnemyType enemyType, int number, float elapseBetweenEnemy)

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Board;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ namespace Enemy
     {
         private List<Vector3> _path;
         private int _pointIndex = 1;
-        private float _speed = 5f;
+        [SerializeField] private float speed;
 
         public void Update()
         {
@@ -23,7 +22,7 @@ namespace Enemy
                         _pointIndex++;
                 }
 
-                var step = _speed * Time.deltaTime;
+                var step = speed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, _path[_pointIndex], step);
             }
         }
