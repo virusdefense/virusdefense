@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Enemy.Wave;
-using UnityEngine;
 
 namespace Enemy.Spawn
 {
@@ -17,34 +16,44 @@ namespace Enemy.Spawn
                 StringSplitOptions.None
             );
 
-            return ReadWaves(lines.ToList(), enemySpawner);
+            var index = 0;
+
+            return Read(lines.ToList(), ref index, enemySpawner);
         }
 
-        private static IWave ReadWaves(IReadOnlyList<string> waveLines, EnemySpawner enemySpawner)
+        private static IWave Read(IReadOnlyList<string> waveLines, ref int index, EnemySpawner enemySpawner)
         {
-            var index = 0;
-            var waves = new List<IWave>();
+            var subWaves = new List<IWave>();
 
             while (index < waveLines.Count)
             {
-                Debug.Log(waveLines[index]);
-                var startTime = int.Parse(waveLines[index++]);
+                if (waveLines[index].Trim()[0] == '-')
+                {
+                    index++;
+                    return new ComposeWave(subWaves);
+                }
 
-
-                if (!int.TryParse(waveLines[index], out _))
-                    waves.Add(ReadLeafWave(waveLines, enemySpawner, startTime, ref index));
+                if (index + 1 < waveLines.Count && int.TryParse(waveLines[index + 1], out _))
+                {
+                    index++;
+                    subWaves.Add(Read(waveLines, ref index, enemySpawner));
+                }
+                else
+                {
+                    subWaves.Add(ReadLeafWave(waveLines, ref index, enemySpawner));
+                }
             }
 
-            return new Wave.Wave(waves);
+            return new ComposeWave(subWaves);
         }
 
         private static LeafWave ReadLeafWave(
             IReadOnlyList<string> waveLines,
-            EnemySpawner enemySpawner,
-            int startTime,
-            ref int index
+            ref int index,
+            EnemySpawner enemySpawner
         )
         {
+            var startTime = int.Parse(waveLines[index++]);
             var enemies = new Dictionary<EnemyType, int>();
 
             do

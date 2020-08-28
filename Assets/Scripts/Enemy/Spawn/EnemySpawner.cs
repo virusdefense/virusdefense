@@ -56,25 +56,5 @@ namespace Enemy.Spawn
                     throw new ArgumentOutOfRangeException(nameof(enemyType), enemyType, null);
             }
         }
-
-        private IWave MakeFakeWave()
-        {
-            // TODO
-            var waveInfo = new Dictionary<EnemyType, int>
-            {
-                {EnemyType.A, 5}, {EnemyType.B, 2}
-            };
-
-            var wave1 = new LeafWave(waveInfo, this, 2, 12);
-
-            waveInfo = new Dictionary<EnemyType, int>
-            {
-                {EnemyType.A, 10}, {EnemyType.B, 3}
-            };
-
-            var wave2 = new LeafWave(waveInfo, this, 18, 30);
-
-            return new Wave.Wave(new List<IWave> {wave1, wave2});
-        }
     }
 }

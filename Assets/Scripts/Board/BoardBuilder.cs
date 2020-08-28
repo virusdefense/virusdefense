@@ -75,10 +75,8 @@ public class BoardBuilder : MonoBehaviour
             if (path == null)
                 continue;
 
-            Debug.Log("Path:");
             for (var i = 0; i < path.Count - 1; i++)
             {
-                Debug.Log($"\tx: {path[i].X}, Y: {path[i].Y}");
                 Debug.DrawLine(
                     path[i].RealWorldPosition() + Vector3.one,
                     path[i + 1].RealWorldPosition() + Vector3.one,
@@ -86,8 +84,6 @@ public class BoardBuilder : MonoBehaviour
                     10f
                 );
             }
-
-            Debug.Log("============");
         }
 
         var realWorldPaths = paths
@@ -106,10 +102,8 @@ public class BoardBuilder : MonoBehaviour
 
         var path = _pathFinding.FindPath(new Vector3(2, 0, 8), position);
 
-        Debug.Log("Path:");
         for (var i = 0; i < path.Count - 1; i++)
         {
-            Debug.Log($"\tx: {path[i].X}, Y: {path[i].Y}");
             Debug.DrawLine(
                 path[i].RealWorldPosition() + Vector3.one,
                 path[i + 1].RealWorldPosition() + Vector3.one,
@@ -117,8 +111,6 @@ public class BoardBuilder : MonoBehaviour
                 2f
             );
         }
-
-        Debug.Log("============");
     }
 
     private static List<List<char>> ReadBoard(string filePath)

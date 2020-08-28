@@ -37,5 +37,10 @@ namespace Enemy.Wave
 
             _isSpawned = true;
         }
+
+        public override string ToString()
+        {
+            return $"countDown: {_countDown}, duration: {_waveDuration}";
+        }
     }
 }
