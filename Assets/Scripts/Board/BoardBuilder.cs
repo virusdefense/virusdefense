@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Board;
 using Enemy.Spawn;
+using Tower;
 using UnityEngine;
 using Utils;
 using Utils.Path.AStar;
@@ -28,6 +29,7 @@ public class BoardBuilder : MonoBehaviour
         var rowNumber = board.Count;
         var columnNumber = board[0].Count;
         var spawnNumber = 0;
+        var isTestDone = false;
 
         var spawnPoints = new List<Vector2Int>();
         var defensePoints = new List<Vector2Int>();
@@ -45,6 +47,12 @@ public class BoardBuilder : MonoBehaviour
                     new Vector3((i + 1) * BlockSide, 0, (j + 1) * BlockSide),
                     Quaternion.identity
                 );
+
+                if (type == 'T' && !isTestDone)
+                {
+                    block.GetComponent<SpawnTower>().Spawn();
+                    isTestDone = true;
+                }
 
                 if (type == 'S')
                     block.GetComponent<EnemySpawner>().ReadWaves($"Assets/Data/Wave/level_00_s{spawnNumber++}.txt");
