@@ -2,7 +2,7 @@ namespace Enemy
 {
     public enum EnemyType
     {
-        A,
-        B
+        A,    // TODO
+        B     // TODO
     }
 }
