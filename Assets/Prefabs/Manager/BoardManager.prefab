@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathBlock: {fileID: 5273102572526140925, guid: 9bb0bb026f635c20599306d58f490f64,
     type: 3}
-  spawnBlock: {fileID: 5912931751257083622, guid: 29772984063b2ade7993afe62bb44aba,
+  spawnBlock: {fileID: 4519008428554815073, guid: 896427ed76ad44bdb85cc6165b1d0ff7,
     type: 3}
   defenseBlock: {fileID: 2297361582685175847, guid: 31637e401b1691a72b5fa1bb8eb15fa3,
     type: 3}
