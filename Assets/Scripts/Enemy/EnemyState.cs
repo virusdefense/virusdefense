@@ -5,7 +5,7 @@ namespace Enemy
 {
     public class EnemyState : MonoBehaviour
     {
-        [SerializeField] private EnemyType Type;
+        [SerializeField] private Enemy.Type Type;
 
         private float _defaultHealth;
         private float _defaultSpeed;

@@ -54,29 +54,18 @@ namespace Enemy.Spawn
         )
         {
             var startTime = int.Parse(waveLines[index++]);
-            var enemies = new Dictionary<EnemyType, int>();
+            var enemies = new Dictionary<Enemy.Type, int>();
 
             do
             {
                 var enemyInfo = waveLines[index++].Trim().Split(' ');
-                enemies.Add(GetType(enemyInfo[0]), int.Parse(enemyInfo[1]));
+                enemies.Add(Enemy.GetEnemyType(enemyInfo[0][0]), int.Parse(enemyInfo[1]));
             } while (!int.TryParse(waveLines[index], out _));
 
             var endTime = int.Parse(waveLines[index++]);
             var wave = new LeafWave(enemies, enemySpawner, startTime, endTime);
 
             return wave;
-        }
-
-        private static EnemyType GetType(string enemyType)
-        {
-            switch (enemyType)
-            {
-                case "A": return EnemyType.A;
-                case "B": return EnemyType.B;
-            }
-
-            return EnemyType.A;
         }
     }
 }

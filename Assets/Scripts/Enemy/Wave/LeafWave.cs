@@ -12,9 +12,9 @@ namespace Enemy.Wave
 
         private readonly EnemySpawner _enemySpawner;
 
-        private readonly Dictionary<EnemyType, int> _enemies;
+        private readonly Dictionary<Enemy.Type, int> _enemies;
 
-        public LeafWave(Dictionary<EnemyType, int> enemies, EnemySpawner enemySpawner, float startTime, float endTime)
+        public LeafWave(Dictionary<Enemy.Type, int> enemies, EnemySpawner enemySpawner, float startTime, float endTime)
         {
             _enemies = enemies;
             _enemySpawner = enemySpawner;

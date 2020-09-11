@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389cd2a76c864cdba3a11195b7b2f72c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyA: {fileID: 4663946219883326885, guid: 83b1bd043315ff0759433d273644975e, type: 3}
-  enemyB: {fileID: 8395878688329702182, guid: a0d4ec16ed27d838d839038b980054cd, type: 3}
+  enemies:
+  - {fileID: 4663946219883326885, guid: 83b1bd043315ff0759433d273644975e, type: 3}
+  - {fileID: 8395878688329702182, guid: a0d4ec16ed27d838d839038b980054cd, type: 3}
   FilePath: 
 --- !u!1001 &8618602034563644316
 PrefabInstance:
