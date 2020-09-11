@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Board;
 using Enemy.Spawn;
@@ -55,8 +53,10 @@ public class BoardBuilder : MonoBehaviour
                 }
 
                 if (type == 'S')
-                    block.GetComponent<EnemySpawner>().ReadWaves($"Assets/Data/Wave/level_00_s{spawnNumber++}.txt");
-                
+                    block.GetComponent<EnemySpawner>().ReadWaves(
+                        string.Format(WaveSpawnFile, level.ToString("00"), spawnNumber++)
+                    );
+
                 var isWalkable = type == 'P' || type == 'S' || type == 'D';
 
                 if (type == 'S')
@@ -144,4 +144,5 @@ public class BoardBuilder : MonoBehaviour
     }
 
     private const string LevelBoardFile = "Plain/Board/level_{0}";
+    private const string WaveSpawnFile = "Plain/Wave/level_{0}_s{1}";
 }
