@@ -11,11 +11,7 @@ using Utils.Path.AStar;
 
 public class BoardBuilder : MonoBehaviour
 {
-    [SerializeField] private GameObject pathBlock;
-    [SerializeField] private GameObject spawnBlock;
-    [SerializeField] private GameObject defenseBlock;
-    [SerializeField] private GameObject buildBlock;
-    [SerializeField] private GameObject notPlayableBlock;
+    [SerializeField] private GameObject[] blocks;
     [SerializeField] private string levelFilePath;
 
     private const int BlockSide = 2;
@@ -40,28 +36,28 @@ public class BoardBuilder : MonoBehaviour
         {
             for (var j = 0; j < columnNumber; j++)
             {
-                var type = board[i][j];
+                var type = Block.GetBlockType(board[i][j]);
 
                 var block = Instantiate(
-                    GetBlock(type),
+                    blocks[(uint) type],
                     new Vector3((i + 1) * BlockSide, 0, (j + 1) * BlockSide),
                     Quaternion.identity
                 );
 
-                if (type == 'T' && !isTestDone)
+                if (type == Block.Type.BUILD && !isTestDone)
                 {
                     block.GetComponent<SpawnTower>().Spawn();
                     isTestDone = true;
                 }
 
-                if (type == 'S')
+                if (type == Block.Type.SPAWN)
                     block.GetComponent<EnemySpawner>().ReadWaves($"Assets/Data/Wave/level_00_s{spawnNumber++}.txt");
                 
-                var isWalkable = type == 'P' || type == 'S' || type == 'D';
+                var isWalkable = type == Block.Type.PATH || type == Block.Type.SPAWN || type == Block.Type.DEFENSE;
 
-                if (type == 'S')
+                if (type == Block.Type.SPAWN)
                     spawnPoints.Add(new Vector2Int(i, j));
-                else if (type == 'D')
+                else if (type == Block.Type.DEFENSE)
                     defensePoints.Add(new Vector2Int(i, j));
 
                 pathGrid[i, j] = new PathNode(i, j, isWalkable);
@@ -134,18 +130,5 @@ public class BoardBuilder : MonoBehaviour
             .Select(line => line.Split(' ')
                 .Select(s => s[0]).ToList())
             .ToList();
-    }
-
-    private GameObject GetBlock(char type)
-    {
-        switch (type)
-        {
-            case 'T': return buildBlock;
-            case 'D': return defenseBlock;
-            case 'S': return spawnBlock;
-            case 'P': return pathBlock;
-        }
-
-        return notPlayableBlock;
     }
 }
