@@ -36,7 +36,7 @@ namespace Tower
         {
             Debug.Log("SHOOT!");
             var bulletScript = Instantiate(bullet).GetComponent<Bullet>();
-            bulletScript.Seek(_target.transform.position);
+            bulletScript.Seek(_target.transform);
         }
 
         private void UpdateTarget()
