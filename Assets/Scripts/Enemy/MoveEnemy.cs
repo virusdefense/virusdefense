@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Board;
 using UnityEngine;
 
@@ -19,7 +19,10 @@ namespace Enemy
         public void Update()
         {
             if (_path == null)
+            {
                 _path = PathManager.GetInstance().SelectNearestPath(transform.position);
+                _state.targetPosition = _path.Last();
+            }
             else
             {
                 if (!_state.IsMoving) return;

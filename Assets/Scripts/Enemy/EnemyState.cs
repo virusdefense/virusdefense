@@ -14,6 +14,7 @@ namespace Enemy
         private int _defaultHealthDamage;
         private int _defaultCoinDrop;
         private bool _isEngaged;
+        public Vector3 targetPosition;
 
         public float Health => _defaultHealth;
         public float Speed => _defaultSpeed;
@@ -22,6 +23,8 @@ namespace Enemy
         public int HealthDamage => _defaultHealthDamage;
         public int CoindDrop => _defaultCoinDrop;
         public bool IsMoving => !_isEngaged;
+
+        public float DistanceToTarget => (targetPosition - transform.position).magnitude;
 
         public bool IsEngaged
         {
