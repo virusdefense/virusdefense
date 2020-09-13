@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enemy;
@@ -8,16 +9,20 @@ namespace Tower
     public class Shooting : MonoBehaviour
     {
         [SerializeField] public GameObject bullet;
+        
         private GameObject _target;
-        private const float Range = 10f;
         private readonly Collider[] _nearObjects = new Collider[NearObjectsArraySize];
-
-        private const float ShootingRate = 1f;
         private float _countDown;
+        private TowerState _state;
+
+        public void Awake()
+        {
+            _state = GetComponent<TowerState>();
+        }
 
         public void Start()
         {
-            _countDown = 1f / ShootingRate;
+            _countDown = 1f / _state.FireRate;
 
             InvokeRepeating(nameof(UpdateTarget), 0f, 0.25f);
         }
@@ -31,7 +36,7 @@ namespace Tower
             if (_target == null) return;
 
             Shoot();
-            _countDown = 1f / ShootingRate;
+            _countDown = 1f / _state.FireRate;
         }
 
         private void Shoot()
@@ -43,7 +48,7 @@ namespace Tower
         private void UpdateTarget()
         {
             ClearNearObjectsArray();
-            var size = Physics.OverlapSphereNonAlloc(transform.position, Range, _nearObjects);
+            var size = Physics.OverlapSphereNonAlloc(transform.position, _state.Range, _nearObjects);
 
             var nearEnemies = _nearObjects
                 .Where(obj => obj != null && obj.CompareTag("Enemy"));
@@ -83,7 +88,7 @@ namespace Tower
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, Range);
+            Gizmos.DrawWireSphere(transform.position, _state.Range);
         }
 
         private const int NearObjectsArraySize = 200;
