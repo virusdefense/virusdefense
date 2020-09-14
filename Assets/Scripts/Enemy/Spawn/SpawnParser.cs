@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Enemy.Wave;
+using UnityEngine;
 
 namespace Enemy.Spawn
 {
@@ -10,12 +9,9 @@ namespace Enemy.Spawn
     {
         public static IWave Parse(string filePath, EnemySpawner enemySpawner)
         {
-            var reader = new StreamReader(filePath);
-            var lines = reader.ReadToEnd().Split(
-                new[] {"\r\n", "\r", "\n"},
-                StringSplitOptions.None
-            );
-
+            var lines = Resources.Load<TextAsset>(filePath)
+                .text.Split('\n');
+            
             var index = 0;
 
             return Read(lines.ToList(), ref index, enemySpawner);

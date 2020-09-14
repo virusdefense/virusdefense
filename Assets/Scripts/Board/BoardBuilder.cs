@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Board;
 using Enemy.Spawn;
@@ -16,7 +14,7 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private GameObject defenseBlock;
     [SerializeField] private GameObject buildBlock;
     [SerializeField] private GameObject notPlayableBlock;
-    [SerializeField] private string levelFilePath;
+    [SerializeField] private int level;
 
     private const int BlockSide = 2;
 
@@ -25,7 +23,7 @@ public class BoardBuilder : MonoBehaviour
 
     private void Start()
     {
-        var board = ReadBoard(levelFilePath);
+        var board = ReadBoard(level);
         var rowNumber = board.Count;
         var columnNumber = board[0].Count;
         var spawnNumber = 0;
@@ -55,8 +53,10 @@ public class BoardBuilder : MonoBehaviour
                 }
 
                 if (type == 'S')
-                    block.GetComponent<EnemySpawner>().ReadWaves($"Assets/Data/Wave/level_00_s{spawnNumber++}.txt");
-                
+                    block.GetComponent<EnemySpawner>().ReadWaves(
+                        string.Format(WaveSpawnFile, level.ToString("00"), spawnNumber++)
+                    );
+
                 var isWalkable = type == 'P' || type == 'S' || type == 'D';
 
                 if (type == 'S')
@@ -121,19 +121,13 @@ public class BoardBuilder : MonoBehaviour
         }
     }
 
-    private static List<List<char>> ReadBoard(string filePath)
+    private static List<List<char>> ReadBoard(int level)
     {
-        var reader = new StreamReader(filePath);
-        var lines = reader.ReadToEnd().Split(
-            new[] {"\r\n", "\r", "\n"},
-            StringSplitOptions.None
-        );
-        reader.Close();
-
-        return lines
+        return Resources.Load<TextAsset>(string.Format(LevelBoardFile, level.ToString("00")))
+            .text.Split('\n')
             .Select(line => line.Split(' ')
-                .Select(s => s[0]).ToList())
-            .ToList();
+                .Select(s => s[0]).ToList()
+            ).ToList();
     }
 
     private GameObject GetBlock(char type)
@@ -148,4 +142,7 @@ public class BoardBuilder : MonoBehaviour
 
         return notPlayableBlock;
     }
+
+    private const string LevelBoardFile = "Plain/Board/level_{0}";
+    private const string WaveSpawnFile = "Plain/Wave/level_{0}_s{1}";
 }
