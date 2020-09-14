@@ -11,7 +11,7 @@ namespace Enemy.Spawn
         private Vector3 _spawnPosition;
         private IWave _wave;
 
-        public string FilePath;
+        private string _filePath;
 
         public void Start()
         {
@@ -32,6 +32,7 @@ namespace Enemy.Spawn
         public void ReadWaves(string filePath)
         {
             _wave = SpawnParser.Parse(filePath, this);
+            Debug.Log(_wave.ToString());
         }
 
         private IEnumerator SpawnCoroutine(Enemy.Type enemyType, int number, float elapseBetweenEnemy)
