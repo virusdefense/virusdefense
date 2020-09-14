@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using Utils;
 
 namespace Tower
 {
@@ -27,10 +28,10 @@ namespace Tower
 
         public void Awake()
         {
-            Resources.Load<TextAsset>(string.Format(TowerFeatureFile, type))
-                .text.Split('\n')
-                .Select(line => line.Split(' ')).ToList()
-                .ForEach(token => SetFeature(token[0], token[1]));
+            ResourcesHelper.SetFeaturesFromTextFile(
+                string.Format(TowerFeatureFile, type),
+                SetFeature
+            );
         }
 
         private void SetFeature(string featureName, string featureValue)
