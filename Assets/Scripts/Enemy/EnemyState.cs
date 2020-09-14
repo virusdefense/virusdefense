@@ -1,11 +1,13 @@
+using System;
 using System.Linq;
 using UnityEngine;
+using Utils;
 
 namespace Enemy
 {
     public class EnemyState : MonoBehaviour
     {
-        [SerializeField] private EnemyType Type;
+        [SerializeField] private Enemy.Type Type;
 
         private float _defaultHealth;
         private float _defaultSpeed;
@@ -34,10 +36,10 @@ namespace Enemy
 
         public void Awake()
         {
-            Resources.Load<TextAsset>(string.Format(EnemyFeaturesFile, Type))
-                .text.Split('\n')
-                .Select(line => line.Split(' ')).ToList()
-                .ForEach(token => SetFeature(token[0], token[1]));
+            ResourcesHelper.SetFeaturesFromTextFile(
+                string.Format(EnemyFeaturesFile, Type),
+                SetFeature
+            );
         }
 
         private void SetFeature(string featureName, string featureValue)

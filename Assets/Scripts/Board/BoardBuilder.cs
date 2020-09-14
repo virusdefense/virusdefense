@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Board;
 using Enemy.Spawn;
@@ -11,12 +9,8 @@ using Utils.Path.AStar;
 
 public class BoardBuilder : MonoBehaviour
 {
-    [SerializeField] private GameObject pathBlock;
-    [SerializeField] private GameObject spawnBlock;
-    [SerializeField] private GameObject defenseBlock;
-    [SerializeField] private GameObject buildBlock;
-    [SerializeField] private GameObject notPlayableBlock;
-    [SerializeField] private string levelFilePath;
+    [SerializeField] private GameObject[] blocks;
+    [SerializeField] private int level;
 
     private const int BlockSide = 2;
 
@@ -25,7 +19,7 @@ public class BoardBuilder : MonoBehaviour
 
     private void Start()
     {
-        var board = ReadBoard(levelFilePath);
+        var board = ReadBoard(level);
         var rowNumber = board.Count;
         var columnNumber = board[0].Count;
         var spawnNumber = 0;
@@ -40,28 +34,30 @@ public class BoardBuilder : MonoBehaviour
         {
             for (var j = 0; j < columnNumber; j++)
             {
-                var type = board[i][j];
+                var type = Block.GetBlockType(board[i][j]);
 
                 var block = Instantiate(
-                    GetBlock(type),
+                    blocks[(uint) type],
                     new Vector3((i + 1) * BlockSide, 0, (j + 1) * BlockSide),
                     Quaternion.identity
                 );
 
-                if (type == 'T' && !isTestDone)
+                if (type == Block.Type.BUILD && !isTestDone)
                 {
                     block.GetComponent<SpawnTower>().Spawn();
                     isTestDone = true;
                 }
 
-                if (type == 'S')
-                    block.GetComponent<EnemySpawner>().ReadWaves($"Assets/Data/Wave/level_00_s{spawnNumber++}.txt");
+                if (type == Block.Type.SPAWN)
+                    block.GetComponent<EnemySpawner>().ReadWaves(
+                        string.Format(WaveSpawnFile, level.ToString("00"), spawnNumber++)
+                    );
                 
-                var isWalkable = type == 'P' || type == 'S' || type == 'D';
+                var isWalkable = type == Block.Type.PATH || type == Block.Type.SPAWN || type == Block.Type.DEFENSE;
 
-                if (type == 'S')
+                if (type == Block.Type.SPAWN)
                     spawnPoints.Add(new Vector2Int(i, j));
-                else if (type == 'D')
+                else if (type == Block.Type.DEFENSE)
                     defensePoints.Add(new Vector2Int(i, j));
 
                 pathGrid[i, j] = new PathNode(i, j, isWalkable);
@@ -121,31 +117,15 @@ public class BoardBuilder : MonoBehaviour
         }
     }
 
-    private static List<List<char>> ReadBoard(string filePath)
+    private static List<List<char>> ReadBoard(int level)
     {
-        var reader = new StreamReader(filePath);
-        var lines = reader.ReadToEnd().Split(
-            new[] {"\r\n", "\r", "\n"},
-            StringSplitOptions.None
-        );
-        reader.Close();
-
-        return lines
+        return Resources.Load<TextAsset>(string.Format(LevelBoardFile, level.ToString("00")))
+            .text.Split('\n')
             .Select(line => line.Split(' ')
-                .Select(s => s[0]).ToList())
-            .ToList();
+                .Select(s => s[0]).ToList()
+            ).ToList();
     }
 
-    private GameObject GetBlock(char type)
-    {
-        switch (type)
-        {
-            case 'T': return buildBlock;
-            case 'D': return defenseBlock;
-            case 'S': return spawnBlock;
-            case 'P': return pathBlock;
-        }
-
-        return notPlayableBlock;
-    }
+    private const string LevelBoardFile = "Plain/Board/level_{0}";
+    private const string WaveSpawnFile = "Plain/Wave/level_{0}_s{1}";
 }

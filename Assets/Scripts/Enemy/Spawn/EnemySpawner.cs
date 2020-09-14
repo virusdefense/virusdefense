@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Enemy.Wave;
 using UnityEngine;
 
@@ -8,13 +6,12 @@ namespace Enemy.Spawn
 {
     public class EnemySpawner : MonoBehaviour
     {
-        [SerializeField] private GameObject enemyA;
-        [SerializeField] private GameObject enemyB;
+        [SerializeField] private GameObject[] enemies;
 
         private Vector3 _spawnPosition;
         private IWave _wave;
 
-        public string FilePath;
+        private string _filePath;
 
         public void Start()
         {
@@ -27,7 +24,7 @@ namespace Enemy.Spawn
             _wave?.Spawn(Time.deltaTime);
         }
 
-        public void Spawn(EnemyType enemyType, int number, float elapseBetweenEnemy)
+        public void Spawn(Enemy.Type enemyType, int number, float elapseBetweenEnemy)
         {
             StartCoroutine(SpawnCoroutine(enemyType, number, elapseBetweenEnemy));
         }
@@ -35,26 +32,18 @@ namespace Enemy.Spawn
         public void ReadWaves(string filePath)
         {
             _wave = SpawnParser.Parse(filePath, this);
+            Debug.Log(_wave.ToString());
         }
 
-        private IEnumerator SpawnCoroutine(EnemyType enemyType, int number, float elapseBetweenEnemy)
+        private IEnumerator SpawnCoroutine(Enemy.Type enemyType, int number, float elapseBetweenEnemy)
         {
             for (var i = 0; i < number; i++)
             {
-                Instantiate(GetEnemy(enemyType)).transform.position = _spawnPosition;
+                Instantiate(enemies[(uint) enemyType]).transform.position = _spawnPosition;
                 yield return new WaitForSeconds(elapseBetweenEnemy);
             }
         }
 
-        private GameObject GetEnemy(EnemyType enemyType)
-        {
-            switch (enemyType)
-            {
-                case EnemyType.A: return enemyA;
-                case EnemyType.B: return enemyB;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(enemyType), enemyType, null);
-            }
-        }
+        
     }
 }
