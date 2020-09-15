@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using UnityEngine;
 using Utils;
 
@@ -16,8 +14,10 @@ namespace Enemy
         private int _defaultHealthDamage;
         private int _defaultCoinDrop;
         private bool _isEngaged;
+        private float _totalDamage;
 
-        public float Health => _defaultHealth;
+        public float Health => _defaultHealth - _totalDamage;
+        public float HealthRatio => Health / _defaultHealth;
         public float Speed => _defaultSpeed;
         public float TrialDamage => _defaultTrialDamage;
         public float Cadence => _defaultCadence;
@@ -37,6 +37,11 @@ namespace Enemy
                 string.Format(EnemyFeaturesFile, Type),
                 SetFeature
             );
+        }
+
+        public void AddDamage(float damage)
+        {
+            _totalDamage += damage;
         }
 
         private void SetFeature(string featureName, string featureValue)
