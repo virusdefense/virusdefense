@@ -43,14 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817e8b3d56ef3d0e1a6b95a0cc75c69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathBlock: {fileID: 5273102572526140925, guid: 9bb0bb026f635c20599306d58f490f64,
-    type: 3}
-  spawnBlock: {fileID: 4519008428554815073, guid: 896427ed76ad44bdb85cc6165b1d0ff7,
-    type: 3}
-  defenseBlock: {fileID: 2297361582685175847, guid: 31637e401b1691a72b5fa1bb8eb15fa3,
-    type: 3}
-  buildBlock: {fileID: 4119687377644907005, guid: 8208b1a497b002a35bfef5c19a6bf8d1,
-    type: 3}
-  notPlayableBlock: {fileID: 6054957069123047953, guid: d7133c3b43d70de6d8acb61b5c4eb177,
-    type: 3}
-  levelFilePath: Assets/Data/Board/level_00.txt
+  blocks:
+  - {fileID: 5273102572526140925, guid: 9bb0bb026f635c20599306d58f490f64, type: 3}
+  - {fileID: 4519008428554815073, guid: 896427ed76ad44bdb85cc6165b1d0ff7, type: 3}
+  - {fileID: 2297361582685175847, guid: 31637e401b1691a72b5fa1bb8eb15fa3, type: 3}
+  - {fileID: 4119687377644907005, guid: 8208b1a497b002a35bfef5c19a6bf8d1, type: 3}
+  - {fileID: 6054957069123047953, guid: d7133c3b43d70de6d8acb61b5c4eb177, type: 3}
+  level: 0

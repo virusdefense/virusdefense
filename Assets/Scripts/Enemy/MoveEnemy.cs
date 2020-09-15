@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Board;
 using UnityEngine;
+using Utils.Messenger;
 
 namespace Enemy
 {
@@ -31,11 +32,19 @@ namespace Enemy
                 {
                     if (_pointIndex + 1 < _path.Count)
                         _pointIndex++;
+                    else
+                        OnReachTarget();
                 }
 
                 var step = _state.Speed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, _path[_pointIndex], step);
             }
+        }
+
+        private void OnReachTarget()
+        {
+            Messenger<int>.Broadcast(GameEvent.ENEMY_REACH_TARGET, _state.HealthDamage);
+            Destroy(gameObject);
         }
     }
 }
