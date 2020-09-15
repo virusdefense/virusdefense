@@ -1,4 +1,4 @@
-using System;
+using Enemy;
 using UnityEngine;
 
 namespace Tower
@@ -9,6 +9,7 @@ namespace Tower
         private Transform _target;
         private Vector3 _targetPosition;
         private float _speed = 75f;
+        private float _damage = 5;
 
         public void Seek(Transform target)
         {
@@ -50,7 +51,8 @@ namespace Tower
 
         private void EnemyHit()
         {
-            Destroy(_target.gameObject); // TODO
+            var enemyState = _target.gameObject.GetComponent<EnemyState>();
+            enemyState.AddDamage(_damage);
         }
     }
 }

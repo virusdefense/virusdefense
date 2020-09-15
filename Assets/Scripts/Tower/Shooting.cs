@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enemy;
 using UnityEngine;
 
 namespace Tower
@@ -7,15 +9,20 @@ namespace Tower
     public class Shooting : MonoBehaviour
     {
         [SerializeField] public GameObject bullet;
+        
         private GameObject _target;
-        private const float Range = 10f;
-
-        private const float ShootingRate = 1f;
+        private readonly Collider[] _nearObjects = new Collider[NearObjectsArraySize];
         private float _countDown;
+        private TowerState _state;
+
+        public void Awake()
+        {
+            _state = GetComponent<TowerState>();
+        }
 
         public void Start()
         {
-            _countDown = 1f / ShootingRate;
+            _countDown = 1f / _state.FireRate;
 
             InvokeRepeating(nameof(UpdateTarget), 0f, 0.25f);
         }
@@ -27,40 +34,63 @@ namespace Tower
             if (_countDown > 0) return;
 
             if (_target == null) return;
-            
+
             Shoot();
-            _countDown = 1f / ShootingRate;
+            _countDown = 1f / _state.FireRate;
         }
 
         private void Shoot()
         {
-            Debug.Log("SHOOT!");
             var bulletScript = Instantiate(bullet).GetComponent<Bullet>();
             bulletScript.Seek(_target.transform);
         }
 
         private void UpdateTarget()
         {
-            var results = new Collider[100];
-            var size = Physics.OverlapSphereNonAlloc(transform.position, Range, results);
+            ClearNearObjectsArray();
+            var size = Physics.OverlapSphereNonAlloc(transform.position, _state.Range, _nearObjects);
 
-            var nearEnemies = results.Where(obj => obj.CompareTag("Enemy"));
+            var nearEnemies = _nearObjects
+                .Where(obj => obj != null && obj.CompareTag("Enemy"));
 
-            var enemy = SelectEnemy(nearEnemies);
-
-            _target = enemy.gameObject;
+            _target = SelectEnemy(nearEnemies);
         }
 
-        private static Collider SelectEnemy(IEnumerable<Collider> enemies)
+        private static GameObject SelectEnemy(IEnumerable<Collider> enemies)
         {
-            // TODO
-            return enemies.First();
+            var minDistanceToTarget = float.MaxValue;
+            GameObject closestToTarget = null;
+
+            foreach (var enemyCollider in enemies)
+            {
+                var distToTarget = enemyCollider.gameObject.GetComponent<EnemyState>()
+                    .DistanceToTarget;
+
+                if (!(distToTarget < minDistanceToTarget)) continue;
+                minDistanceToTarget = distToTarget;
+                closestToTarget = enemyCollider.gameObject;
+            }
+
+            return closestToTarget;
+        }
+
+        /*
+         * Remove old reference of enemies from result array.
+         * If this step is skipped old enemies can remain on array of
+         * nearest enemies even if they are out of range.
+         */
+        private void ClearNearObjectsArray()
+        {
+            for (var i = 0; i < NearObjectsArraySize; i++)
+                _nearObjects[i] = null;
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, Range);
+            Gizmos.DrawWireSphere(transform.position, _state.Range);
         }
+
+        private const int NearObjectsArraySize = 200;
     }
 }
