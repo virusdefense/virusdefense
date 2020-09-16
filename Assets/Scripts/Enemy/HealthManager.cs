@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utils.Messenger;
 
 namespace Enemy
 {
@@ -19,7 +19,13 @@ namespace Enemy
             healthBar.fillAmount = _state.HealthRatio;
 
             if (_state.Health <= 0)
-                Destroy(gameObject);
+                KillEnemy();
+        }
+
+        private void KillEnemy()
+        {
+            Messenger<int>.Broadcast(GameEvent.ENEMY_KILLED, _state.CoindDrop);
+            Destroy(gameObject);
         }
     }
 }
