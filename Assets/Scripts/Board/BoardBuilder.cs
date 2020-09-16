@@ -23,7 +23,6 @@ public class BoardBuilder : MonoBehaviour
         var rowNumber = board.Count;
         var columnNumber = board[0].Count;
         var spawnNumber = 0;
-        var isTestDone = false;
 
         var spawnPoints = new List<Vector2Int>();
         var defensePoints = new List<Vector2Int>();
@@ -41,12 +40,6 @@ public class BoardBuilder : MonoBehaviour
                     new Vector3((i + 1) * BlockSide, 0, (j + 1) * BlockSide),
                     Quaternion.identity
                 );
-
-                if (type == Block.Type.BUILD && !isTestDone)
-                {
-                    block.GetComponent<SpawnTower>().Spawn();
-                    isTestDone = true;
-                }
 
                 if (type == Block.Type.SPAWN)
                     block.GetComponent<EnemySpawner>().ReadWaves(
@@ -96,25 +89,6 @@ public class BoardBuilder : MonoBehaviour
             ).ToList();
 
         PathManager.GetInstance().Paths = realWorldPaths;
-    }
-
-    private void Update()
-    {
-        if (!Input.GetMouseButtonDown(0)) return;
-        if (!Mouse.GetMouseWorldPosition(out var position)) return;
-
-
-        var path = _pathFinding.FindPath(new Vector3(2, 0, 8), position);
-
-        for (var i = 0; i < path.Count - 1; i++)
-        {
-            Debug.DrawLine(
-                path[i].RealWorldPosition() + Vector3.one,
-                path[i + 1].RealWorldPosition() + Vector3.one,
-                Color.green,
-                2f
-            );
-        }
     }
 
     private static List<List<char>> ReadBoard(int level)

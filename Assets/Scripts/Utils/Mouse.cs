@@ -15,8 +15,22 @@ namespace Utils
                 return true;
             }
 
-
             mousePosition = Vector3.zero;
+            return false;
+        }
+
+        public static bool GetGameObjectPointed(out GameObject pointedObject)
+        {
+            var positionOnScreen = Input.mousePosition;
+            var ray = Camera.main.ScreenPointToRay(positionOnScreen);
+
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity) && hit.collider != null)
+            {
+                pointedObject = hit.collider.gameObject;
+                return true;
+            }
+
+            pointedObject = null;
             return false;
         }
     }

@@ -9,7 +9,7 @@ namespace Tower
         public void Spawn()
         {
             var spawnPosition = transform.position;
-            spawnPosition.y = 0.5f;
+            spawnPosition.y += 0.5f;
 
             Instantiate(tower).transform.position = spawnPosition;
         }

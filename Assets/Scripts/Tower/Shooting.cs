@@ -1,15 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enemy;
 using UnityEngine;
+using Utils;
 
 namespace Tower
 {
     public class Shooting : MonoBehaviour
     {
         [SerializeField] public GameObject bullet;
-        
+
         private GameObject _target;
         private readonly Collider[] _nearObjects = new Collider[NearObjectsArraySize];
         private float _countDown;
@@ -41,8 +41,12 @@ namespace Tower
 
         private void Shoot()
         {
-            var bulletScript = Instantiate(bullet).GetComponent<Bullet>();
-            bulletScript.Seek(_target.transform);
+            var bulletSpawnPosition = transform.position;
+            bulletSpawnPosition.y += 1f;
+            
+            var bulletGO = Instantiate(bullet);
+            bulletGO.transform.position = bulletSpawnPosition;
+            bulletGO.GetComponent<Bullet>().Seek(_target.transform);
         }
 
         private void UpdateTarget()
@@ -51,7 +55,7 @@ namespace Tower
             var size = Physics.OverlapSphereNonAlloc(transform.position, _state.Range, _nearObjects);
 
             var nearEnemies = _nearObjects
-                .Where(obj => obj != null && obj.CompareTag("Enemy"));
+                .Where(obj => obj != null && obj.CompareTag(Tag.EnemyTag));
 
             _target = SelectEnemy(nearEnemies);
         }
