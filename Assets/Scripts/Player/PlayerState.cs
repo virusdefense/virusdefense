@@ -6,20 +6,24 @@ namespace Player
 {
     public class PlayerState : MonoBehaviour
     {
+        [SerializeField] public int level;
+
         private int _defaultHealth;
         private float _defaultReturnRate;
         private int _coin;
+        private int _totalDamage;
 
-        public int Health => _defaultHealth;
+        public int Health => _defaultHealth - _totalDamage;
+        public float HealthRatio => Health / _defaultHealth;
         public float ReturnRate => _defaultReturnRate;
 
         private void Awake()
         {
             ResourcesHelper.SetFeaturesFromTextFile(
-                PlayerFeaturesFile,
+                string.Format(PlayerFeaturesFile, level.ToString("00")),
                 SetFeature
             );
-            
+
             Debug.Log($"initial health: {Health}");
 
             Messenger<int>.AddListener(GameEvent.ENEMY_REACH_TARGET, OnDamage);
@@ -34,7 +38,7 @@ namespace Player
 
         private void OnDamage(int damage)
         {
-            _defaultHealth -= damage;
+            _totalDamage += damage;
             Debug.Log($"remaining health: {Health}");
         }
 
@@ -57,6 +61,6 @@ namespace Player
             }
         }
 
-        private const string PlayerFeaturesFile = "Plain/Player/player";
+        private const string PlayerFeaturesFile = "Plain/Player/level_{0}";
     }
 }
