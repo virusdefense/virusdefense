@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using Utils;
 
@@ -6,7 +5,7 @@ namespace Tower
 {
     public class TowerState : MonoBehaviour
     {
-        [SerializeField] private Tower.Type type;
+        [SerializeField] private TowerType.Type type;
 
         private float _defaultRange;
         private float _defaultFireRate;

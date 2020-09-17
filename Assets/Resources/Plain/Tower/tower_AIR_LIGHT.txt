@@ -1,2 +1,4 @@
 fireRate 1
 range 7
+price 100
+name Light

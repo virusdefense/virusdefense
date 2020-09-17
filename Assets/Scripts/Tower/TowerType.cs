@@ -2,7 +2,7 @@ using System;
 
 namespace Tower
 {
-    public static class Tower
+    public static class TowerType
     {
         public enum Type
         {

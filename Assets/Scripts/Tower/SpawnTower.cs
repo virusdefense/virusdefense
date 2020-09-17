@@ -5,19 +5,17 @@ namespace Tower
 {
     public class SpawnTower : MonoBehaviour
     {
-        [SerializeField] private GameObject tower;
+        [SerializeField] private GameObject[] towers;
         private float _towerHeight;
         private GameObject _instantiateTower;
 
-        private void Awake()
-        {
-            _towerHeight = tower.transform.localScale.y;
-        }
+        public bool IsFreeBlock => _instantiateTower == null;
 
-        public void Spawn()
+        public void Spawn(TowerType.Type type)
         {
+            _towerHeight = towers[(uint) type].transform.localScale.y;
             _instantiateTower = Instantiate(
-                tower,
+                towers[(uint) type],
                 PositionHelper.OnTop(transform, _towerHeight / 2),
                 Quaternion.identity
             );

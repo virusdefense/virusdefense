@@ -106,4 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834ad97d2e074f11ab4c94860a7e4e35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tower: {fileID: 2452227741705693277, guid: 0ed6bfb90155bb74c8c6fdfe1039e4f9, type: 3}
+  towers:
+  - {fileID: 0}
+  - {fileID: 2452227741705693277, guid: 0ed6bfb90155bb74c8c6fdfe1039e4f9, type: 3}
+  - {fileID: 0}
