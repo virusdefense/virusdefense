@@ -16,6 +16,7 @@ namespace Player
         public int Health => _defaultHealth - _totalDamage;
         public float HealthRatio => Health / _defaultHealth;
         public float ReturnRate => _defaultReturnRate;
+        public int Coin => _coin;
 
         private void Awake()
         {
@@ -28,12 +29,14 @@ namespace Player
 
             Messenger<int>.AddListener(GameEvent.ENEMY_REACH_TARGET, OnDamage);
             Messenger<int>.AddListener(GameEvent.ENEMY_KILLED, OnEnemyKilled);
+            Messenger<int>.AddListener(GameEvent.TOWER_CREATED, OnTowerCreated);
         }
 
         private void OnDestroy()
         {
             Messenger<int>.RemoveListener(GameEvent.ENEMY_REACH_TARGET, OnDamage);
             Messenger<int>.RemoveListener(GameEvent.ENEMY_KILLED, OnEnemyKilled);
+            Messenger<int>.RemoveListener(GameEvent.TOWER_CREATED, OnTowerCreated);
         }
 
         private void OnDamage(int damage)
@@ -46,6 +49,13 @@ namespace Player
         {
             _coin += coinDrop;
             Debug.Log($"coin: {_coin}");
+            Messenger.Broadcast(GameEvent.COIN_CHANGE);
+        }
+
+        private void OnTowerCreated(int price)
+        {
+            _coin -= price;
+            Messenger.Broadcast(GameEvent.COIN_CHANGE);
         }
 
         private void SetFeature(string featureName, string featureValue)
@@ -57,6 +67,9 @@ namespace Player
                     break;
                 case "returnRate":
                     _defaultReturnRate = float.Parse(featureValue);
+                    break;
+                case "coin":
+                    _coin = int.Parse(featureValue);
                     break;
             }
         }

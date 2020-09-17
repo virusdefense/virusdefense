@@ -1,5 +1,6 @@
 using UnityEngine;
 using Utils;
+using Utils.Messenger;
 
 namespace Tower
 {
@@ -31,6 +32,8 @@ namespace Tower
                 string.Format(TowerFeatureFile, type),
                 SetFeature
             );
+            
+            Messenger<int>.Broadcast(GameEvent.TOWER_CREATED, Price);
         }
 
         private void SetFeature(string featureName, string featureValue)

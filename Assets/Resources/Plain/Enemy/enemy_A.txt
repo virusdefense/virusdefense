@@ -1,4 +1,4 @@
 speed 5
 health 10
 healthDamage 2
-coinDrop 1
+coinDrop 10
