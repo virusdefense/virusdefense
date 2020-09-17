@@ -41,11 +41,12 @@ namespace Tower
 
         private void Shoot()
         {
-            var bulletSpawnPosition = transform.position;
-            bulletSpawnPosition.y += 1f;
-            
-            var bulletGO = Instantiate(bullet);
-            bulletGO.transform.position = bulletSpawnPosition;
+            var bulletGO = Instantiate(
+                bullet,
+                PositionHelper.OnTop(transform, 2.5f),
+                Quaternion.identity
+            );
+
             bulletGO.GetComponent<Bullet>().Seek(_target.transform);
         }
 

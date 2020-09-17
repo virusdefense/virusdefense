@@ -1,17 +1,25 @@
 using UnityEngine;
+using Utils;
 
 namespace Tower
 {
     public class SpawnTower : MonoBehaviour
     {
         [SerializeField] private GameObject tower;
+        private float _towerHeight;
+
+        private void Awake()
+        {
+            _towerHeight = tower.transform.localScale.y;
+        }
 
         public void Spawn()
         {
-            var spawnPosition = transform.position;
-            spawnPosition.y += 0.5f;
-
-            Instantiate(tower).transform.position = spawnPosition;
+            Instantiate(
+                tower,
+                PositionHelper.OnTop(transform, _towerHeight / 2),
+                Quaternion.identity
+            );
         }
     }
 }

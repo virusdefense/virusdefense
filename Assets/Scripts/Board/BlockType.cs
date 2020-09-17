@@ -8,7 +8,8 @@ namespace Board
             SPAWN,
             DEFENSE,
             BUILD,
-            NOT_PLAYABLE
+            NOT_PLAYABLE,
+            SKIP
         }
         
         public static Type GetBlockType(char type)
@@ -19,6 +20,7 @@ namespace Board
                     case 'D': return Type.DEFENSE;
                     case 'S': return Type.SPAWN;
                     case 'P': return Type.PATH;
+                    case '+': return Type.SKIP;
                 }
         
                 return Type.NOT_PLAYABLE;

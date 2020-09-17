@@ -2,9 +2,7 @@
 using System.Linq;
 using Board;
 using Enemy.Spawn;
-using Tower;
 using UnityEngine;
-using Utils;
 using Utils.Path.AStar;
 
 public class BoardBuilder : MonoBehaviour
@@ -35,17 +33,6 @@ public class BoardBuilder : MonoBehaviour
             {
                 var type = Block.GetBlockType(board[i][j]);
 
-                var block = Instantiate(
-                    blocks[(uint) type],
-                    new Vector3((i + 1) * BlockSide, 0, (j + 1) * BlockSide),
-                    Quaternion.identity
-                );
-
-                if (type == Block.Type.SPAWN)
-                    block.GetComponent<EnemySpawner>().ReadWaves(
-                        string.Format(WaveSpawnFile, level.ToString("00"), spawnNumber++)
-                    );
-                
                 var isWalkable = type == Block.Type.PATH || type == Block.Type.SPAWN || type == Block.Type.DEFENSE;
 
                 if (type == Block.Type.SPAWN)
@@ -54,6 +41,23 @@ public class BoardBuilder : MonoBehaviour
                     defensePoints.Add(new Vector2Int(i, j));
 
                 pathGrid[i, j] = new PathNode(i, j, isWalkable);
+
+                if (type == Block.Type.SKIP)
+                    continue;
+
+                // Build blocks are the double of others block
+                var blockShift = type == Block.Type.BUILD ? 1.5f : 1f;
+
+                var block = Instantiate(
+                    blocks[(uint) type],
+                    new Vector3(i + blockShift, 0, j + blockShift) * BlockSide,
+                    Quaternion.identity
+                );
+
+                if (type == Block.Type.SPAWN)
+                    block.GetComponent<EnemySpawner>().ReadWaves(
+                        string.Format(WaveSpawnFile, level.ToString("00"), spawnNumber++)
+                    );
             }
         }
 
