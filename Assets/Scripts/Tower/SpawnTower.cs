@@ -7,6 +7,7 @@ namespace Tower
     {
         [SerializeField] private GameObject tower;
         private float _towerHeight;
+        private GameObject _instantiateTower;
 
         private void Awake()
         {
@@ -15,7 +16,7 @@ namespace Tower
 
         public void Spawn()
         {
-            Instantiate(
+            _instantiateTower = Instantiate(
                 tower,
                 PositionHelper.OnTop(transform, _towerHeight / 2),
                 Quaternion.identity

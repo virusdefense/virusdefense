@@ -6,16 +6,18 @@ namespace Tower
     {
         public enum Type
         {
-            A,
-            B
+            GROUND,
+            AIR_LIGHT,
+            AIR_HEAVY
         }
 
         public static Type GetType(char type)
         {
             switch (type)
             {
-                case 'A': return Type.A;
-                case 'B': return Type.B;
+                case 'G': return Type.GROUND;
+                case 'L': return Type.AIR_LIGHT;
+                case 'H': return Type.AIR_HEAVY;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
