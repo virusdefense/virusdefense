@@ -69,6 +69,12 @@ namespace Manager
             Debug.Log("Click Air Heavy Tower");
         }
 
+        public void OnExit()
+        {
+            store.SetActive(false);
+            _listenClick = true;
+        }
+
         private void BuildTower(TowerType.Type type)
         {
             var spawnTower = _selectedObject.GetComponent<SpawnTower>();
