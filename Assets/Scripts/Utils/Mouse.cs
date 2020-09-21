@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Utils
 {
@@ -32,6 +33,11 @@ namespace Utils
 
             pointedObject = null;
             return false;
+        }
+
+        public static bool IsMouseOverUI()
+        {
+            return EventSystem.current.IsPointerOverGameObject();
         }
     }
 }

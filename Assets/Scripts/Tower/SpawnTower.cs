@@ -10,6 +10,7 @@ namespace Tower
         private GameObject _instantiateTower;
 
         public bool IsFreeBlock => _instantiateTower == null;
+        public GameObject Tower => _instantiateTower;
 
         public void Spawn(TowerType.Type type)
         {
