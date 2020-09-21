@@ -1,9 +1,7 @@
-using Player;
 using Tower;
 using UI;
 using UnityEngine;
 using Utils;
-using Utils.Messenger;
 
 namespace Manager
 {
@@ -11,9 +9,9 @@ namespace Manager
     {
         [SerializeField] private GameObject store;
         [SerializeField] private GameObject sellUpdate;
-        [SerializeField] private SellButton _sellButton;
-        private PlayerState _playerState;
-        private GameObject _selectedObject;
+        [SerializeField] private SellButton sellButton;
+        private SpawnTower _selectedBlock;
+        private TowerState _selectedTowerState;
         private bool _isStoreOpen;
         private bool _isSellUpdateOpen;
 
@@ -21,7 +19,6 @@ namespace Manager
         {
             store.SetActive(_isStoreOpen);
             sellUpdate.SetActive(_isSellUpdateOpen);
-            _playerState = FindObjectOfType<PlayerState>();
         }
 
         private void Update()
@@ -35,12 +32,17 @@ namespace Manager
             if (!Input.GetMouseButtonDown(0) || Mouse.IsMouseOverUI()) return;
             if (!Mouse.GetGameObjectPointed(out var hit)) return;
 
-            _selectedObject = hit;
-
             if (hit.CompareTag(Tag.BuildBlockTag))
+            {
+                _selectedBlock = hit.GetComponent<SpawnTower>();
                 ClickOnBuildBlock();
+            }
             else if (hit.CompareTag(Tag.TowerTag))
+            {
+                _selectedTowerState = hit.GetComponent<TowerState>();
+                _selectedBlock = _selectedTowerState.Block;
                 OpenUpdateSellMenu();
+            }
         }
 
         private void LateUpdate()
@@ -51,26 +53,19 @@ namespace Manager
 
         private void ClickOnBuildBlock()
         {
-            var spawnTower = _selectedObject.GetComponent<SpawnTower>();
-
-            if (spawnTower.IsFreeBlock)
+            if (_selectedBlock.IsFreeBlock)
                 _isStoreOpen = true;
             else
-            {
-                _selectedObject = spawnTower.Tower;
                 OpenUpdateSellMenu();
-            }
         }
 
         private void OpenUpdateSellMenu()
         {
-            var towerState = _selectedObject.GetComponent<TowerState>();
-            _sellButton.UpdateButton(towerState.Price);
+            sellButton.UpdateButton(_selectedTowerState.Price);
             _isSellUpdateOpen = true;
-
             sellUpdate.transform.position = PositionHelper.OnTop(
-                _selectedObject.transform,
-                _selectedObject.transform.localScale.y
+                _selectedBlock.Tower.transform,
+                _selectedBlock.Tower.transform.localScale.y
             );
         }
 
@@ -97,24 +92,19 @@ namespace Manager
 
         public void OnSell()
         {
-            var towerState = _selectedObject.GetComponent<TowerState>();
-            var moneyBack = Mathf.FloorToInt(towerState.Price * _playerState.ReturnRate);
-            Messenger<int>.Broadcast(GameEvent.TOWER_SELLED, moneyBack);
-            Destroy(_selectedObject);
+            _selectedBlock.SellTower();
             _isSellUpdateOpen = false;
         }
 
         public void OnUpdate()
         {
-            Debug.Log($"Update {_selectedObject}");
+            Debug.Log($"Update {_selectedBlock}");
             _isSellUpdateOpen = false;
         }
 
         private void BuildTower(TowerType.Type type)
         {
-            var spawnTower = _selectedObject.GetComponent<SpawnTower>();
-            spawnTower.Spawn(type);
-
+            _selectedBlock.Spawn(type);
             _isStoreOpen = false;
         }
     }

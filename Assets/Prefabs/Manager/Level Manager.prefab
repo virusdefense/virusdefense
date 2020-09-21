@@ -791,6 +791,11 @@ PrefabInstance:
       propertyPath: _sellButton
       value: 
       objectReference: {fileID: 629922652769013605}
+    - target: {fileID: 5047899458538801865, guid: ccc220056e199c09794300f0bd34b31d,
+        type: 3}
+      propertyPath: sellButton
+      value: 
+      objectReference: {fileID: 629922652769013605}
     - target: {fileID: 5047899458538801866, guid: ccc220056e199c09794300f0bd34b31d,
         type: 3}
       propertyPath: m_LocalPosition.x

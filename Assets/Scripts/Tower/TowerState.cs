@@ -25,6 +25,7 @@ namespace Tower
         public float Damage => _defaultDamage;
         public float ShootersNumber => _defaultShootersNumber;
 
+        public SpawnTower Block { get; set; }
 
         public void Awake()
         {
@@ -32,7 +33,7 @@ namespace Tower
                 string.Format(TowerFeatureFile, type),
                 SetFeature
             );
-            
+
             Messenger<int>.Broadcast(GameEvent.TOWER_CREATED, Price);
         }
 
