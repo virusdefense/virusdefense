@@ -1,6 +1,9 @@
+using Player;
 using Tower;
+using UI;
 using UnityEngine;
 using Utils;
+using Utils.Messenger;
 
 namespace Manager
 {
@@ -8,6 +11,8 @@ namespace Manager
     {
         [SerializeField] private GameObject store;
         [SerializeField] private GameObject sellUpdate;
+        [SerializeField] private SellButton _sellButton;
+        private PlayerState _playerState;
         private GameObject _selectedObject;
         private bool _isStoreOpen;
         private bool _isSellUpdateOpen;
@@ -16,6 +21,7 @@ namespace Manager
         {
             store.SetActive(_isStoreOpen);
             sellUpdate.SetActive(_isSellUpdateOpen);
+            _playerState = FindObjectOfType<PlayerState>();
         }
 
         private void Update()
@@ -58,6 +64,8 @@ namespace Manager
 
         private void OpenUpdateSellMenu()
         {
+            var towerState = _selectedObject.GetComponent<TowerState>();
+            _sellButton.UpdateButton(towerState.Price);
             _isSellUpdateOpen = true;
 
             sellUpdate.transform.position = PositionHelper.OnTop(
@@ -89,7 +97,10 @@ namespace Manager
 
         public void OnSell()
         {
-            Debug.Log($"Sell {_selectedObject}");
+            var towerState = _selectedObject.GetComponent<TowerState>();
+            var moneyBack = Mathf.FloorToInt(towerState.Price * _playerState.ReturnRate);
+            Messenger<int>.Broadcast(GameEvent.TOWER_SELLED, moneyBack);
+            Destroy(_selectedObject);
             _isSellUpdateOpen = false;
         }
 

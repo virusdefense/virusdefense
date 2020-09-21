@@ -30,6 +30,7 @@ namespace Player
             Messenger<int>.AddListener(GameEvent.ENEMY_REACH_TARGET, OnDamage);
             Messenger<int>.AddListener(GameEvent.ENEMY_KILLED, OnEnemyKilled);
             Messenger<int>.AddListener(GameEvent.TOWER_CREATED, OnTowerCreated);
+            Messenger<int>.AddListener(GameEvent.TOWER_SELLED, OnTowerSelled);
         }
 
         private void OnDestroy()
@@ -37,6 +38,7 @@ namespace Player
             Messenger<int>.RemoveListener(GameEvent.ENEMY_REACH_TARGET, OnDamage);
             Messenger<int>.RemoveListener(GameEvent.ENEMY_KILLED, OnEnemyKilled);
             Messenger<int>.RemoveListener(GameEvent.TOWER_CREATED, OnTowerCreated);
+            Messenger<int>.RemoveListener(GameEvent.TOWER_SELLED, OnTowerSelled);
         }
 
         private void OnDamage(int damage)
@@ -55,6 +57,12 @@ namespace Player
         private void OnTowerCreated(int price)
         {
             _coin -= price;
+            Messenger.Broadcast(GameEvent.COIN_CHANGE);
+        }
+
+        private void OnTowerSelled(int moneyBack)
+        {
+            _coin += moneyBack;
             Messenger.Broadcast(GameEvent.COIN_CHANGE);
         }
 
