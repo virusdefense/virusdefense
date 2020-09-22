@@ -99,9 +99,9 @@ namespace Manager
             _isSellUpdateOpen = false;
         }
 
-        public void OnUpdate()
+        public void OnUpgrade()
         {
-            Debug.Log($"Update {_selectedBlock}");
+            _selectedBlock.UpgradeTower();
             _isSellUpdateOpen = false;
         }
 

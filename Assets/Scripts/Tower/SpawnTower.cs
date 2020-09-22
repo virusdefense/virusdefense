@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UnityEngine;
 using Utils;
@@ -13,6 +14,7 @@ namespace Tower
         private TowerState _instantiateTowerState;
         private PlayerState _playerState;
         private bool _needToSellTower;
+        private bool _needToUpgrade;
 
         public bool IsFreeBlock => _instantiateTower == null;
         public GameObject Tower => _instantiateTower;
@@ -26,11 +28,28 @@ namespace Tower
         {
             if (_needToSellTower)
                 DestroyTower();
+            if (!_needToUpgrade) return;
+            var type = _instantiateTowerState.Type;
+            var level = _instantiateTowerState.TowerLevel;
+
+            Destroy(_instantiateTower);
+            Spawn(type, level + 1);
+            _needToUpgrade = false;
+        }
+
+        public void Spawn(TowerType.Type type)
+        {
+            Spawn(type, 1);
         }
 
         public void SellTower()
         {
             _needToSellTower = true;
+        }
+
+        public void UpgradeTower()
+        {
+            _needToUpgrade = true;
         }
 
         private void DestroyTower()
@@ -41,11 +60,13 @@ namespace Tower
             _needToSellTower = false;
         }
 
-        public void Spawn(TowerType.Type type)
+        private void Spawn(TowerType.Type type, int towerLevel)
         {
-            _towerHeight = towers[(uint) type].transform.localScale.y;
+            Debug.Log($"type: {type}, level: {towerLevel}");
+            var index = (uint) type + (towerLevel - 1) * 3;
+            _towerHeight = towers[index].transform.localScale.y;
             _instantiateTower = Instantiate(
-                towers[(uint) type],
+                towers[index],
                 PositionHelper.OnTop(transform, _towerHeight / 2),
                 Quaternion.identity
             );
