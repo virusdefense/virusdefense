@@ -7,6 +7,7 @@ namespace Tower
     public class TowerState : MonoBehaviour
     {
         [SerializeField] private TowerType.Type type;
+        [SerializeField] private int towerLevel;
 
         private float _defaultRange;
         private float _defaultFireRate;
@@ -24,13 +25,15 @@ namespace Tower
         public float TrainingTime => _defaultTrainingTime;
         public float Damage => _defaultDamage;
         public float ShootersNumber => _defaultShootersNumber;
+        public TowerType.Type Type => type;
+        public int TowerLevel => towerLevel;
 
         public SpawnTower Block { get; set; }
 
         public void Awake()
         {
             ResourcesHelper.SetFeaturesFromTextFile(
-                string.Format(TowerFeatureFile, type),
+                string.Format(TowerFeatureFile, type, towerLevel),
                 SetFeature
             );
 
@@ -68,6 +71,6 @@ namespace Tower
             }
         }
 
-        private const string TowerFeatureFile = "Plain/tower/tower_{0}";
+        private const string TowerFeatureFile = "Plain/tower/tower_{0}_{1}";
     }
 }

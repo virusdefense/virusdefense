@@ -10,6 +10,7 @@ namespace Manager
         [SerializeField] private GameObject store;
         [SerializeField] private GameObject sellUpdate;
         [SerializeField] private SellButton sellButton;
+        [SerializeField] private UpgradeButton upgradeButton;
         private SpawnTower _selectedBlock;
         private TowerState _selectedTowerState;
         private bool _isStoreOpen;
@@ -62,6 +63,8 @@ namespace Manager
         private void OpenUpdateSellMenu()
         {
             sellButton.UpdateButton(_selectedTowerState.Price);
+            upgradeButton.UpdateButton(_selectedTowerState.Type, _selectedTowerState.TowerLevel);
+
             _isSellUpdateOpen = true;
             sellUpdate.transform.position = PositionHelper.OnTop(
                 _selectedBlock.Tower.transform,

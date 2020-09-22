@@ -24,14 +24,14 @@ namespace UI
         private void Awake()
         {
             ResourcesHelper.SetFeaturesFromTextFile(
-                string.Format(TowerFeatureFile, type),
+                string.Format(TowerFeatureFile, type, 1),
                 SetFeature
             );
 
             _button = GetComponent<Button>();
             _buttonText = GetComponentInChildren<Text>();
             _playerState = FindObjectOfType<PlayerState>();
-            
+
             Debug.Log(_playerState.Coin);
 
             _okText = $"<b>{_towerName}</b>\n\n{_towerPrice}";
@@ -43,7 +43,7 @@ namespace UI
         private void Update()
         {
             if (!_updateNeeded) return;
-            
+
             Debug.Log("Update ui");
 
             if (_towerPrice > _playerState.Coin)
@@ -78,6 +78,6 @@ namespace UI
             _updateNeeded = true;
         }
 
-        private const string TowerFeatureFile = "Plain/tower/tower_{0}";
+        private const string TowerFeatureFile = "Plain/tower/tower_{0}_{1}";
     }
 }
