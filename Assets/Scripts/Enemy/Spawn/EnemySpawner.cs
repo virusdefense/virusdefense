@@ -32,7 +32,7 @@ namespace Enemy.Spawn
         public void ReadWaves(string filePath)
         {
             _wave = SpawnParser.Parse(filePath, this);
-            Debug.Log(_wave.ToString());
+            Debug.Log($"Number of waves: {_wave.NumberOfTotalWaves()}");
         }
 
         private IEnumerator SpawnCoroutine(Enemy.Type enemyType, int number, float elapseBetweenEnemy)
@@ -43,7 +43,5 @@ namespace Enemy.Spawn
                 yield return new WaitForSeconds(elapseBetweenEnemy);
             }
         }
-
-        
     }
 }
