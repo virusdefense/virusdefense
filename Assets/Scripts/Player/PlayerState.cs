@@ -1,3 +1,5 @@
+using System;
+using Manager;
 using UnityEngine;
 using Utils;
 using Utils.Messenger;
@@ -12,6 +14,7 @@ namespace Player
         private float _defaultReturnRate;
         private int _coin;
         private int _totalDamage;
+        private GameManager _gameManager;
 
         public int Health => _defaultHealth - _totalDamage;
         public float HealthRatio => Health / _defaultHealth;
@@ -24,6 +27,8 @@ namespace Player
                 string.Format(PlayerFeaturesFile, level.ToString("00")),
                 SetFeature
             );
+
+            _gameManager = FindObjectOfType<GameManager>();
 
             Debug.Log($"initial health: {Health}");
 
@@ -39,6 +44,12 @@ namespace Player
             Messenger<int>.RemoveListener(GameEvent.ENEMY_KILLED, OnEnemyKilled);
             Messenger<int>.RemoveListener(GameEvent.TOWER_CREATED, OnTowerCreated);
             Messenger<int>.RemoveListener(GameEvent.TOWER_SELLED, OnTowerSelled);
+        }
+
+        private void LateUpdate()
+        {
+            if (Health <= 0 && _gameManager.IsGameOnPlay)
+                Messenger.Broadcast(GameEvent.OVER);
         }
 
         private void OnDamage(int damage)

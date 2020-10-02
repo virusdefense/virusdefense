@@ -7,5 +7,9 @@ namespace Utils.Messenger
         public const string COIN_CHANGE = "COIN_CHANGE";
         public const string TOWER_CREATED = "TOWER_CREATED";
         public const string TOWER_SELLED = "TOWER_SELLED";
+        public const string PAUSE = "PAUSE";
+        public const string PLAY = "PLAY";
+        public const string OVER = "OVER";
+        public const string WON = "WON";
     }
 }

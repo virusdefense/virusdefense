@@ -2,6 +2,7 @@ using Tower;
 using UI;
 using UnityEngine;
 using Utils;
+using Utils.Messenger;
 
 namespace Manager
 {
@@ -55,7 +56,10 @@ namespace Manager
         private void ClickOnBuildBlock()
         {
             if (_selectedBlock.IsFreeBlock)
+            {
                 _isStoreOpen = true;
+                Messenger.Broadcast(GameEvent.PAUSE);
+            }
             else
                 OpenUpdateSellMenu();
         }
@@ -91,6 +95,7 @@ namespace Manager
         public void OnExit()
         {
             _isStoreOpen = false;
+            Messenger.Broadcast(GameEvent.PLAY);
         }
 
         public void OnSell()
@@ -109,6 +114,7 @@ namespace Manager
         {
             _selectedBlock.Spawn(type);
             _isStoreOpen = false;
+            Messenger.Broadcast(GameEvent.PLAY);
         }
     }
 }
