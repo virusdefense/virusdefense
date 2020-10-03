@@ -6,6 +6,8 @@ namespace Manager
     public class GameManager : MonoBehaviour
     {
         private GameState _state;
+        private int _numberOfSpawnPoint;
+        private int _numberOfEndedSpawn;
 
         public bool IsGameOver => _state == GameState.Over;
         public bool IsGameWon => _state == GameState.Won;
@@ -19,11 +21,20 @@ namespace Manager
             Messenger.AddListener(GameEvent.PAUSE, OnPause);
             Messenger.AddListener(GameEvent.WON, OnWon);
             Messenger.AddListener(GameEvent.OVER, OnGameOver);
+            Messenger.AddListener(GameEvent.SPAWN_END, OnSpawnEnd);
+            Messenger<int>.AddListener(GameEvent.BOARD_BUILD, OnBoardBuild);
         }
 
         private void LateUpdate()
         {
             Time.timeScale = _state == GameState.Play ? 1 : 0;
+
+            _state = _numberOfEndedSpawn == _numberOfSpawnPoint ? GameState.Won : _state;
+
+            if (_state == GameState.Won)
+            {
+                Debug.Log("Game won");
+            }
         }
 
         private void OnDestroy()
@@ -32,6 +43,8 @@ namespace Manager
             Messenger.RemoveListener(GameEvent.PAUSE, OnPause);
             Messenger.RemoveListener(GameEvent.WON, OnWon);
             Messenger.RemoveListener(GameEvent.OVER, OnGameOver);
+            Messenger.RemoveListener(GameEvent.SPAWN_END, OnSpawnEnd);
+            Messenger<int>.RemoveListener(GameEvent.BOARD_BUILD, OnBoardBuild);
         }
 
         private void OnPlay()
@@ -57,7 +70,23 @@ namespace Manager
             _state = GameState.Over;
             Debug.Log("On Game Over");
         }
-        
-        public enum GameState {Play, Pause, Over, Won}
+
+        private void OnBoardBuild(int nSpawnPoint)
+        {
+            _numberOfSpawnPoint = nSpawnPoint;
+        }
+
+        private void OnSpawnEnd()
+        {
+            _numberOfEndedSpawn += 1;
+        }
+
+        public enum GameState
+        {
+            Play,
+            Pause,
+            Over,
+            Won
+        }
     }
 }
