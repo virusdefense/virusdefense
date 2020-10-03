@@ -118,6 +118,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7040795750922464816}
     m_Modifications:
+    - target: {fileID: 6012121638172679290, guid: 2fd322a21cd59177e9b2a381e1dd1a44,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3914492741452851837}
+    - target: {fileID: 6012121638172679290, guid: 2fd322a21cd59177e9b2a381e1dd1a44,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPause
+      objectReference: {fileID: 0}
+    - target: {fileID: 6012121638172679290, guid: 2fd322a21cd59177e9b2a381e1dd1a44,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8659642012303273985, guid: 2fd322a21cd59177e9b2a381e1dd1a44,
         type: 3}
       propertyPath: m_LocalPosition.x

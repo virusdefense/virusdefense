@@ -2,6 +2,7 @@ using Tower;
 using UI;
 using UnityEngine;
 using Utils;
+using Utils.Messenger;
 
 namespace Manager
 {
@@ -103,6 +104,13 @@ namespace Manager
         {
             _selectedBlock.UpgradeTower();
             _isSellUpdateOpen = false;
+        }
+
+        public void OnPause()
+        {
+            Debug.Log("Pause button clicked");
+            Messenger.Broadcast(GameEvent.PAUSE);
+            
         }
 
         private void BuildTower(TowerType.Type type)
