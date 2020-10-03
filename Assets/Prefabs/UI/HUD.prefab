@@ -654,8 +654,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8659642013125282235}
   - component: {fileID: 8659642013125282234}
+  - component: {fileID: 32417984530054308}
   m_Layer: 5
-  m_Name: VerticalGroup
+  m_Name: LabelGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,6 +708,21 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &32417984530054308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659642013125282212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b852235e41714325a63be6c329989cca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinLabel: {fileID: 8659642012672804352}
+  lifeLabel: {fileID: 8659642012359240455}
+  waveLabel: {fileID: 8659642013844624031}
 --- !u!1 &8659642013296125853
 GameObject:
   m_ObjectHideFlags: 0
