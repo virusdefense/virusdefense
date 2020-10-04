@@ -29,10 +29,9 @@ namespace Manager
         {
             Time.timeScale = _state == GameState.Play ? 1 : 0;
 
-            _state = _numberOfEndedSpawn == _numberOfSpawnPoint ? GameState.Won : _state;
-
             if (_state == GameState.Won)
             {
+                // TODO
                 Debug.Log("Game won");
             }
         }
@@ -79,9 +78,10 @@ namespace Manager
         private void OnSpawnEnd()
         {
             _numberOfEndedSpawn += 1;
+            _state = _numberOfEndedSpawn == _numberOfSpawnPoint ? GameState.Won : _state;
         }
 
-        public enum GameState
+        private enum GameState
         {
             Play,
             Pause,
