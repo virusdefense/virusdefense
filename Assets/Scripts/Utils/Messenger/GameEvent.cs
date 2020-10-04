@@ -13,5 +13,7 @@ namespace Utils.Messenger
         public const string WON = "WON";
         public const string BOARD_BUILD = "BOARD_BUILD";
         public const string SPAWN_END = "SPAWN_END";
+        public const string STORE_OPEN = "STORE_OPEN";
+        public const string TOWER_MENU_OPEN = "TOWER_MENU_OPEN";
     }
 }

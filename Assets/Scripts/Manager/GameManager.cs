@@ -13,6 +13,8 @@ namespace Manager
         public bool IsGameWon => _state == GameState.Won;
         public bool IsGameOnPlay => _state == GameState.Play;
         public bool IsGameOnPause => _state == GameState.Pause;
+        public bool IsStoreOpen => _state == GameState.StoreOpen;
+        public bool IsTowerMenuOpen => _state == GameState.TowerMenuOpen;
 
         private void Awake()
         {
@@ -22,12 +24,17 @@ namespace Manager
             Messenger.AddListener(GameEvent.WON, OnWon);
             Messenger.AddListener(GameEvent.OVER, OnGameOver);
             Messenger.AddListener(GameEvent.SPAWN_END, OnSpawnEnd);
+            Messenger.AddListener(GameEvent.STORE_OPEN, OnStoreOpen);
+            Messenger.AddListener(GameEvent.TOWER_MENU_OPEN, OnTowerMenuOpen);
             Messenger<int>.AddListener(GameEvent.BOARD_BUILD, OnBoardBuild);
         }
 
         private void LateUpdate()
         {
-            Time.timeScale = _state == GameState.Play ? 1 : 0;
+            Time.timeScale = _state == GameState.Play ||
+                             _state == GameState.TowerMenuOpen
+                ? 1
+                : 0;
 
             if (_state == GameState.Won)
             {
@@ -43,6 +50,8 @@ namespace Manager
             Messenger.RemoveListener(GameEvent.WON, OnWon);
             Messenger.RemoveListener(GameEvent.OVER, OnGameOver);
             Messenger.RemoveListener(GameEvent.SPAWN_END, OnSpawnEnd);
+            Messenger.RemoveListener(GameEvent.STORE_OPEN, OnStoreOpen);
+            Messenger.RemoveListener(GameEvent.TOWER_MENU_OPEN, OnTowerMenuOpen);
             Messenger<int>.RemoveListener(GameEvent.BOARD_BUILD, OnBoardBuild);
         }
 
@@ -70,6 +79,18 @@ namespace Manager
             Debug.Log("On Game Over");
         }
 
+        private void OnStoreOpen()
+        {
+            _state = GameState.StoreOpen;
+            Debug.Log("On Store Open");
+        }
+
+        private void OnTowerMenuOpen()
+        {
+            _state = GameState.TowerMenuOpen;
+            Debug.Log("On Tower Menu Open");
+        }
+
         private void OnBoardBuild(int nSpawnPoint)
         {
             _numberOfSpawnPoint = nSpawnPoint;
@@ -86,7 +107,9 @@ namespace Manager
             Play,
             Pause,
             Over,
-            Won
+            Won,
+            StoreOpen,
+            TowerMenuOpen
         }
     }
 }
