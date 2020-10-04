@@ -8,18 +8,15 @@ namespace Manager
 {
     public class InputManager : MonoBehaviour
     {
-        [SerializeField] private GameObject sellUpdate;
-        [SerializeField] private SellButton sellButton;
-        [SerializeField] private UpgradeButton upgradeButton;
         private GameManager _gameManager;
+        private TowerMenuManager _towerMenu;
         private SpawnTower _selectedBlock;
         private TowerState _selectedTowerState;
-        private bool _isSellUpdateOpen;
 
         private void Awake()
         {
             _gameManager = FindObjectOfType<GameManager>();
-            sellUpdate.SetActive(_isSellUpdateOpen);
+            _towerMenu = FindObjectOfType<TowerMenuManager>();
         }
 
         private void Update()
@@ -46,11 +43,6 @@ namespace Manager
             }
         }
 
-        private void LateUpdate()
-        {
-            sellUpdate.SetActive(_isSellUpdateOpen);
-        }
-
         private void ClickOnBuildBlock()
         {
             if (_selectedBlock.IsFreeBlock)
@@ -61,15 +53,9 @@ namespace Manager
 
         private void OpenUpdateSellMenu()
         {
-            sellButton.UpdateButton(_selectedTowerState.Price);
-            upgradeButton.UpdateButton(_selectedTowerState.Type, _selectedTowerState.TowerLevel);
+            _towerMenu.UpdateUI(_selectedBlock, _selectedTowerState);
 
             Messenger.Broadcast(GameEvent.TOWER_MENU_OPEN);
-            
-            sellUpdate.transform.position = PositionHelper.OnTop(
-                _selectedBlock.Tower.transform,
-                _selectedBlock.Tower.transform.localScale.y
-            );
         }
 
         public void OnGroundTowerSelect()
