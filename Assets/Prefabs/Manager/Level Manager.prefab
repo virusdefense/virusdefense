@@ -15,6 +15,19 @@ MonoBehaviour:
   towerMenu: {fileID: 5841758830410672630}
   sellButton: {fileID: 4438002959486616570}
   upgradeButton: {fileID: 2742608838557212141}
+--- !u!114 &6702818809240429340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528321831514230539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e911f4ece14dc38ab18e0765353766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseButton: {fileID: 3361584661573730327}
 --- !u!1 &7040795750922464817
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,6 +916,12 @@ GameObject:
 --- !u!4 &320359232165581592 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1988448829308832304, guid: d0b85e9b5244e1bcc90dc9214ce9e964,
+    type: 3}
+  m_PrefabInstance: {fileID: 2299728259799161128}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3361584661573730327 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3552488923047434559, guid: d0b85e9b5244e1bcc90dc9214ce9e964,
     type: 3}
   m_PrefabInstance: {fileID: 2299728259799161128}
   m_PrefabAsset: {fileID: 0}
