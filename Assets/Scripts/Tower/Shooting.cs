@@ -47,7 +47,8 @@ namespace Tower
                 Quaternion.identity
             );
 
-            bulletGO.GetComponent<Bullet>().Seek(_target.transform);
+            bulletGO.GetComponent<Bullet>()
+                .Shoot(_target.transform, _state.BulletSpeed, _state.BulletDamage);
         }
 
         private void UpdateTarget()

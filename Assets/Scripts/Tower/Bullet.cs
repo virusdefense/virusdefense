@@ -1,4 +1,5 @@
 using Enemy;
+using UnityEditor;
 using UnityEngine;
 using Utils;
 
@@ -9,13 +10,15 @@ namespace Tower
         [SerializeField] private GameObject impactEffect;
         private Transform _target;
         private Vector3 _targetPosition;
-        private float _speed = 75f; // TODO
-        private float _damage = 5; // TODO
+        private float _speed;
+        private float _damage;
 
-        public void Seek(Transform target)
+        public void Shoot(Transform target, float speed, float damage)
         {
             _target = target;
             _targetPosition = _target.position;
+            _speed = speed;
+            _damage = damage;
         }
 
         public void Update()
