@@ -10,7 +10,7 @@ namespace Tower
     {
         [SerializeField] public GameObject bullet;
 
-        private GameObject _target;
+        private Transform _target;
         private readonly Collider[] _nearObjects = new Collider[NearObjectsArraySize];
         private float _countDown;
         private TowerState _state;
@@ -47,19 +47,22 @@ namespace Tower
                 Quaternion.identity
             );
 
-            bulletGO.GetComponent<Bullet>()
-                .Shoot(_target.transform, _state.BulletSpeed, _state.BulletDamage);
+            if (_state.Type == TowerType.Type.AIR_LIGHT)
+                LightShootStrategy(bulletGO, _target);
+            else
+                HeavyShootStrategy(bulletGO, _target);
         }
 
         private void UpdateTarget()
         {
             ClearNearObjectsArray();
-            var size = Physics.OverlapSphereNonAlloc(transform.position, _state.Range, _nearObjects);
+            Physics.OverlapSphereNonAlloc(transform.position, _state.Range, _nearObjects);
 
             var nearEnemies = _nearObjects
                 .Where(obj => obj != null && obj.CompareTag(Tag.EnemyTag));
 
-            _target = SelectEnemy(nearEnemies);
+            var enemy = SelectEnemy(nearEnemies);
+            _target = enemy == null ? null : enemy.transform;
         }
 
         private static GameObject SelectEnemy(IEnumerable<Collider> enemies)
@@ -78,6 +81,18 @@ namespace Tower
             }
 
             return closestToTarget;
+        }
+
+        private void LightShootStrategy(GameObject bulletGO, Transform target)
+        {
+            bulletGO.GetComponent<Bullet>()
+                .Shoot(target, _state.BulletSpeed, _state.BulletDamage);
+        }
+
+        private void HeavyShootStrategy(GameObject bulletGO, Transform target)
+        {
+            bulletGO.GetComponent<Bullet>()
+                .Shoot(target, _state.BulletSpeed, _state.BulletDamage, _state.BulletRange);
         }
 
         /*
