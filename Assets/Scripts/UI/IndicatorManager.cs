@@ -1,6 +1,7 @@
 using System;
 using Enemy;
 using Enemy.Spawn;
+using Enemy.Wave;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,7 @@ namespace UI
         [SerializeField] private Text lifeLabel;
         [SerializeField] private Text waveLabel;
 
-        private EnemySpawner _spawner;
+        private IWave _waves;
         private PlayerState _playerState;
 
         private void Awake()
@@ -23,8 +24,8 @@ namespace UI
 
         private void LateUpdate()
         {
-            if (_spawner == null)
-                _spawner = FindObjectOfType<EnemySpawner>();
+            if (_waves == null)
+                _waves = FindObjectOfType<EnemySpawner>().Waves;
 
             coinLabel.text = _playerState.Coin.ToString();
             lifeLabel.text = _playerState.Health.ToString();
@@ -32,8 +33,8 @@ namespace UI
             {
                 lifeLabel.text = "0";
             }
-            //TODO add update wave label
-            Debug.Log(_spawner);
+
+            waveLabel.text = $"{_waves.NumberOfSpawnedWaves()} / {_waves.NumberOfTotalWaves()}";
         }
     }
 }

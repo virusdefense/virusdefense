@@ -18,6 +18,8 @@ namespace Enemy.Spawn
 
         private string _filePath;
 
+        public IWave Waves => _wave;
+
         public void Start()
         {
             _spawnPosition = transform.position;
