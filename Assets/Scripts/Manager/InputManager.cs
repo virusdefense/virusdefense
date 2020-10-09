@@ -91,6 +91,17 @@ namespace Manager
             Messenger.Broadcast(GameEvent.PLAY);
         }
 
+        public void OnPause()
+        {
+            Debug.Log("Pause button clicked");
+            
+            Messenger.Broadcast(
+                _gameManager.IsGameOnPause
+                    ? GameEvent.PLAY
+                    : GameEvent.PAUSE
+            );
+        }
+
         private void BuildTower(TowerType.Type type)
         {
             _selectedBlock.Spawn(type);
