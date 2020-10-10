@@ -2,6 +2,7 @@ using System;
 using Manager;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Utils.Messenger;
 
 namespace UI
 {
@@ -18,6 +19,23 @@ namespace UI
         private void LateUpdate()
         {
             pauseMenu.SetActive(_gameManager.IsGameOnPause);
+        }
+
+        public void OnMainMenuClick()
+        {
+            Debug.Log("menu button clicked");
+        }
+        
+        public void OnContinueClick()
+        {
+            Debug.Log("continue button clicked");
+            Messenger.Broadcast(GameEvent.PLAY);
+        }
+
+        public void OnRestartClick()
+        {
+            Debug.Log("restart button clicked");
+            
         }
     }
 }
