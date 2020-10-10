@@ -1,11 +1,13 @@
+using System;
 using Manager;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI
 {
-    public class HUDManager : MonoBehaviour
+    public class PauseMenuManager : MonoBehaviour
     {
-        [SerializeField] private GameObject pauseButton;
+        [SerializeField] private GameObject pauseMenu;
         private GameManager _gameManager;
 
         private void Awake()
@@ -15,7 +17,7 @@ namespace UI
 
         private void LateUpdate()
         {
-            pauseButton.SetActive(_gameManager.IsGameOnPlay || _gameManager.IsTowerMenuOpen);
+            pauseMenu.SetActive(_gameManager.IsGameOnPause);
         }
     }
 }
