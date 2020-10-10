@@ -35,5 +35,10 @@ namespace Utils
         {
             return _valueSet ? _value : result();
         }
+
+        public T GetOrDefault(T defaultValue)
+        {
+            return _valueSet ? _value : defaultValue;
+        }
     }
 }
