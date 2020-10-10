@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2470104268812462312}
   - component: {fileID: 7945693834848169350}
   m_Layer: 5
-  m_Name: Start 2
+  m_Name: Star 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,7 +187,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 30}
+  m_SizeDelta: {x: 0, y: 33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1889100331437243881
 MonoBehaviour:
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 264692639746293151}
   - component: {fileID: 8212619430846720634}
   m_Layer: 5
-  m_Name: Start 1
+  m_Name: Star 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -480,7 +480,7 @@ GameObject:
   - component: {fileID: 2615690979481494553}
   - component: {fileID: 6665213399050575369}
   m_Layer: 5
-  m_Name: Start 3
+  m_Name: Star 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
