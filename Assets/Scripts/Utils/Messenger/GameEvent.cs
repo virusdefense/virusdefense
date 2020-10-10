@@ -15,5 +15,6 @@ namespace Utils.Messenger
         public const string SPAWN_END = "SPAWN_END";
         public const string STORE_OPEN = "STORE_OPEN";
         public const string TOWER_MENU_OPEN = "TOWER_MENU_OPEN";
+        public const string RELOAD_SCENE = "RELOAD_SCENE";
     }
 }

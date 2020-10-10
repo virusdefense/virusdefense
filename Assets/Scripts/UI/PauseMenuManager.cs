@@ -35,7 +35,7 @@ namespace UI
         public void OnRestartClick()
         {
             Debug.Log("restart button clicked");
-            
+            Messenger.Broadcast(GameEvent.RELOAD_SCENE);
         }
     }
 }
