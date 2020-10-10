@@ -24,6 +24,7 @@ namespace UI
         public void OnMainMenuClick()
         {
             Debug.Log("menu button clicked");
+            Messenger.Broadcast(GameEvent.MAIN_MENU);
         }
         
         public void OnContinueClick()
