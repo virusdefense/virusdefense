@@ -21,6 +21,8 @@ namespace Manager
 
         private void Update()
         {
+            if (_gameManager.IsGameOnPause) return;
+            
             if (_gameManager.IsTowerMenuOpen && Input.GetMouseButtonDown(0) && !Mouse.IsMouseOverUI())
             {
                 Messenger.Broadcast(GameEvent.PLAY);

@@ -15,7 +15,7 @@ namespace UI
 
         private void LateUpdate()
         {
-            pauseButton.SetActive(!_gameManager.IsStoreOpen);
+            pauseButton.SetActive(_gameManager.IsGameOnPlay || _gameManager.IsTowerMenuOpen);
         }
     }
 }
