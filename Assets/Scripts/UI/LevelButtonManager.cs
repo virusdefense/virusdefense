@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Settings;
@@ -7,9 +6,9 @@ namespace UI
 {
     public class LevelButtonManager : MonoBehaviour
     {
-        [SerializeField] private GameObject score1;
-        [SerializeField] private GameObject score2;
-        [SerializeField] private GameObject score3;
+        [SerializeField] private Image score1;
+        [SerializeField] private Image score2;
+        [SerializeField] private Image score3;
         [SerializeField] private Button button;
         [SerializeField] private int level;
 
@@ -23,9 +22,10 @@ namespace UI
 
             var score = SettingHelper.GetLevelScore(level).GetOrDefault(0);
 
-            score1.SetActive(score >= 1);
-            score2.SetActive(score >= 2);
-            score3.SetActive(score >= 3);
+            score1.enabled = score >= 1;
+            score2.enabled = score >= 2;
+            score3.enabled = score >= 3;
+
         }
     }
 }

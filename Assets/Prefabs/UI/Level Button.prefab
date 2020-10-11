@@ -290,9 +290,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a46dbd679e48eabd6a3675f15f05ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score1: {fileID: 7431053688560359495}
-  score2: {fileID: 1459910507956408759}
-  score3: {fileID: 8366529098167465977}
+  score1: {fileID: 8212619430846720634}
+  score2: {fileID: 7945693834848169350}
+  score3: {fileID: 6665213399050575369}
   button: {fileID: 5687139827476052304}
   level: 0
 --- !u!1 &4307807394545046497
