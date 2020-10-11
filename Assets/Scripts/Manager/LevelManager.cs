@@ -25,8 +25,7 @@ namespace Manager
 
         private void OnLoadMainMenu()
         {
-            //TODO
-            Debug.Log("Load Main Menu");
+            SceneManager.LoadScene("Scenes/Select Level Scene");
         }
     }
 }
