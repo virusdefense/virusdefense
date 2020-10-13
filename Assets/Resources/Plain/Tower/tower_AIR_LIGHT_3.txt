@@ -1,0 +1,7 @@
+fireRate 1.2
+range 8
+price 200
+bulletSpeed 80
+bulletDamage 10
+unlockPrice 6
+name Light
