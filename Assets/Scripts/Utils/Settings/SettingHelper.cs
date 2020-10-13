@@ -71,7 +71,7 @@ namespace Utils.Settings
 
             PlayerPrefs.SetInt(key, level);
         }
-        
+
         public static Optional<int> GetUnlockTowerLevel(TowerType.Type type)
         {
             if (type == TowerType.Type.GROUND)
@@ -101,6 +101,40 @@ namespace Utils.Settings
             return PlayerPrefs.HasKey(Key.HEAVY_TOWER_LEVEL)
                 ? new Optional<int>(PlayerPrefs.GetInt(Key.HEAVY_TOWER_LEVEL))
                 : new Optional<int>();
+        }
+
+        public static int GetTotalFounds()
+        {
+            var founds = 0;
+            var level = 1;
+
+            while (IsLevelCompleted(level).GetOrDefault(false))
+            {
+                founds += GetLevelScore(level).GetOrDefault(0);
+                level++;
+            }
+
+            return founds;
+        }
+
+        public static Optional<int> GetTotalSpendsFound()
+        {
+            return PlayerPrefs.HasKey(Key.TOTAL_SPEND_FOUND)
+                ? new Optional<int>(PlayerPrefs.GetInt(Key.TOTAL_SPEND_FOUND))
+                : new Optional<int>();
+        }
+
+        public static int GetAvailableFounds()
+        {
+            return GetTotalFounds() - GetTotalSpendsFound().GetOrDefault(0);
+        }
+
+        public static void IncreaseSpendsFound(int spend)
+        {
+            PlayerPrefs.SetInt(
+                Key.TOTAL_SPEND_FOUND,
+                GetTotalSpendsFound().GetOrDefault(0) + spend
+            );
         }
     }
 }
