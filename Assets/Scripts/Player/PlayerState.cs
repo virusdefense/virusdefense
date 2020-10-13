@@ -1,6 +1,9 @@
+using System;
+using Manager;
 using UnityEngine;
 using Utils;
 using Utils.Messenger;
+using Utils.Settings;
 
 namespace Player
 {
@@ -11,10 +14,14 @@ namespace Player
         private int _defaultHealth;
         private float _defaultReturnRate;
         private int _coin;
+        private int _initialCoin;
         private int _totalDamage;
+        private bool _isDone;
+        private int _unlockNext;
+        private GameManager _gameManager;
 
         public int Health => _defaultHealth - _totalDamage;
-        public float HealthRatio => Health / _defaultHealth;
+        public float HealthRatio => (float) Health / _defaultHealth;
         public float ReturnRate => _defaultReturnRate;
         public int Coin => _coin;
 
@@ -25,12 +32,19 @@ namespace Player
                 SetFeature
             );
 
+            _initialCoin = _coin;
+
+            _gameManager = FindObjectOfType<GameManager>();
+
             Debug.Log($"initial health: {Health}");
 
             Messenger<int>.AddListener(GameEvent.ENEMY_REACH_TARGET, OnDamage);
             Messenger<int>.AddListener(GameEvent.ENEMY_KILLED, OnEnemyKilled);
             Messenger<int>.AddListener(GameEvent.TOWER_CREATED, OnTowerCreated);
             Messenger<int>.AddListener(GameEvent.TOWER_SELLED, OnTowerSelled);
+
+            Debug.Log($"isLevelCompleted: {SettingHelper.IsLevelCompleted(level).GetOrDefault(false)}");
+            Debug.Log($"levelScore: {SettingHelper.GetLevelScore(level).GetOrDefault(0)}");
         }
 
         private void OnDestroy()
@@ -39,6 +53,52 @@ namespace Player
             Messenger<int>.RemoveListener(GameEvent.ENEMY_KILLED, OnEnemyKilled);
             Messenger<int>.RemoveListener(GameEvent.TOWER_CREATED, OnTowerCreated);
             Messenger<int>.RemoveListener(GameEvent.TOWER_SELLED, OnTowerSelled);
+        }
+
+        private void LateUpdate()
+        {
+            if (_isDone) return;
+
+            if (Health <= 0 && _gameManager.IsGameOnPlay)
+                Messenger.Broadcast(GameEvent.OVER);
+
+            if (!_gameManager.IsGameWon) return;
+
+            EndLevelSaves();
+            _isDone = true;
+        }
+
+        private void EndLevelSaves()
+        {
+            Debug.Log("Save");
+            SettingHelper.SetLevelAsCompleted(level);
+
+            var oldScore = SettingHelper.GetLevelScore(level)
+                .GetOrDefault(0);
+            var newScore = GetScore();
+
+            Debug.Log($"oldScore {oldScore}");
+            Debug.Log($"newScore: {newScore}");
+
+            if (newScore > oldScore)
+                SettingHelper.SetLevelScore(level, newScore);
+
+            for (var i = 1; i <= _unlockNext; i++)
+            {
+                SettingHelper.SetLevelAsUnlocked(level + i);
+            }
+        }
+
+        private int GetScore()
+        {
+            var score = Mathf.RoundToInt(
+                ((float) _coin / _initialCoin * CoinWeight
+                 + HealthRatio * HealthWeight)
+                / (HealthWeight + CoinWeight)
+                * 3
+            );
+
+            return score > 3 ? 3 : score;
         }
 
         private void OnDamage(int damage)
@@ -79,9 +139,14 @@ namespace Player
                 case "coin":
                     _coin = int.Parse(featureValue);
                     break;
+                case "unlockNext":
+                    _unlockNext = int.Parse(featureValue);
+                    break;
             }
         }
 
         private const string PlayerFeaturesFile = "Plain/Player/level_{0}";
+        private const float HealthWeight = 5;
+        private const float CoinWeight = 1;
     }
 }

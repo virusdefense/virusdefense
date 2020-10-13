@@ -8,5 +8,14 @@ namespace Utils.Messenger
         public const string TOWER_CREATED = "TOWER_CREATED";
         public const string TOWER_SELLED = "TOWER_SELLED";
         public const string PAUSE = "PAUSE";
+        public const string PLAY = "PLAY";
+        public const string OVER = "OVER";
+        public const string WON = "WON";
+        public const string BOARD_BUILD = "BOARD_BUILD";
+        public const string SPAWN_END = "SPAWN_END";
+        public const string STORE_OPEN = "STORE_OPEN";
+        public const string TOWER_MENU_OPEN = "TOWER_MENU_OPEN";
+        public const string RELOAD_SCENE = "RELOAD_SCENE";
+        public const string MAIN_MENU = "MAIN_MENU";
     }
 }

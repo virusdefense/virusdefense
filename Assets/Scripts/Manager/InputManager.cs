@@ -8,26 +8,24 @@ namespace Manager
 {
     public class InputManager : MonoBehaviour
     {
-        [SerializeField] private GameObject store;
-        [SerializeField] private GameObject sellUpdate;
-        [SerializeField] private SellButton sellButton;
-        [SerializeField] private UpgradeButton upgradeButton;
+        private GameManager _gameManager;
+        private TowerMenuManager _towerMenu;
         private SpawnTower _selectedBlock;
         private TowerState _selectedTowerState;
-        private bool _isStoreOpen;
-        private bool _isSellUpdateOpen;
 
         private void Awake()
         {
-            store.SetActive(_isStoreOpen);
-            sellUpdate.SetActive(_isSellUpdateOpen);
+            _gameManager = FindObjectOfType<GameManager>();
+            _towerMenu = FindObjectOfType<TowerMenuManager>();
         }
 
         private void Update()
         {
-            if (_isSellUpdateOpen && Input.GetMouseButtonDown(0) && !Mouse.IsMouseOverUI())
+            if (_gameManager.IsGameOnPause) return;
+            
+            if (_gameManager.IsTowerMenuOpen && Input.GetMouseButtonDown(0) && !Mouse.IsMouseOverUI())
             {
-                _isSellUpdateOpen = false;
+                Messenger.Broadcast(GameEvent.PLAY);
                 return;
             }
 
@@ -47,30 +45,19 @@ namespace Manager
             }
         }
 
-        private void LateUpdate()
-        {
-            sellUpdate.SetActive(_isSellUpdateOpen);
-            store.SetActive(_isStoreOpen);
-        }
-
         private void ClickOnBuildBlock()
         {
             if (_selectedBlock.IsFreeBlock)
-                _isStoreOpen = true;
+                Messenger.Broadcast(GameEvent.STORE_OPEN);
             else
                 OpenUpdateSellMenu();
         }
 
         private void OpenUpdateSellMenu()
         {
-            sellButton.UpdateButton(_selectedTowerState.Price);
-            upgradeButton.UpdateButton(_selectedTowerState.Type, _selectedTowerState.TowerLevel);
+            _towerMenu.UpdateUI(_selectedBlock, _selectedTowerState);
 
-            _isSellUpdateOpen = true;
-            sellUpdate.transform.position = PositionHelper.OnTop(
-                _selectedBlock.Tower.transform,
-                _selectedBlock.Tower.transform.localScale.y
-            );
+            Messenger.Broadcast(GameEvent.TOWER_MENU_OPEN);
         }
 
         public void OnGroundTowerSelect()
@@ -92,32 +79,36 @@ namespace Manager
 
         public void OnExit()
         {
-            _isStoreOpen = false;
+            Messenger.Broadcast(GameEvent.PLAY);
         }
 
         public void OnSell()
         {
             _selectedBlock.SellTower();
-            _isSellUpdateOpen = false;
+            Messenger.Broadcast(GameEvent.PLAY);
         }
 
         public void OnUpgrade()
         {
             _selectedBlock.UpgradeTower();
-            _isSellUpdateOpen = false;
+            Messenger.Broadcast(GameEvent.PLAY);
         }
 
         public void OnPause()
         {
             Debug.Log("Pause button clicked");
-            Messenger.Broadcast(GameEvent.PAUSE);
             
+            Messenger.Broadcast(
+                _gameManager.IsGameOnPause
+                    ? GameEvent.PLAY
+                    : GameEvent.PAUSE
+            );
         }
 
         private void BuildTower(TowerType.Type type)
         {
             _selectedBlock.Spawn(type);
-            _isStoreOpen = false;
+            Messenger.Broadcast(GameEvent.PLAY);
         }
     }
 }
