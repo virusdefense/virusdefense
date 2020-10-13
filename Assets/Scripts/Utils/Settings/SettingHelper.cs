@@ -1,4 +1,5 @@
 using System;
+using Tower;
 using UnityEngine;
 
 namespace Utils.Settings
@@ -59,21 +60,43 @@ namespace Utils.Settings
                 : new Optional<int>();
         }
 
-        public static Optional<int> GetUnlockLevelOfGroundTower()
+        public static void SetUnlockedTowerLevel(TowerType.Type type, int level)
+        {
+            var key = Key.GROUND_TOWER_LEVEL;
+
+            if (type == TowerType.Type.AIR_LIGHT)
+                key = Key.LIGHT_TOWER_LEVEL;
+            else if (type == TowerType.Type.AIR_HEAVY)
+                key = Key.HEAVY_TOWER_LEVEL;
+
+            PlayerPrefs.SetInt(key, level);
+        }
+        
+        public static Optional<int> GetUnlockTowerLevel(TowerType.Type type)
+        {
+            if (type == TowerType.Type.GROUND)
+                return GetUnlockLevelOfGroundTower();
+            if (type == TowerType.Type.AIR_LIGHT)
+                return GetUnlockLevelOfLightTower();
+
+            return GetUnlockLevelOfHeavyTower();
+        }
+
+        private static Optional<int> GetUnlockLevelOfGroundTower()
         {
             return PlayerPrefs.HasKey(Key.GROUND_TOWER_LEVEL)
                 ? new Optional<int>(PlayerPrefs.GetInt(Key.GROUND_TOWER_LEVEL))
                 : new Optional<int>();
         }
 
-        public static Optional<int> GetUnlockLevelOfLightTower()
+        private static Optional<int> GetUnlockLevelOfLightTower()
         {
             return PlayerPrefs.HasKey(Key.LIGHT_TOWER_LEVEL)
                 ? new Optional<int>(PlayerPrefs.GetInt(Key.LIGHT_TOWER_LEVEL))
                 : new Optional<int>();
         }
 
-        public static Optional<int> GetUnlockLevelOfHeavyTower()
+        private static Optional<int> GetUnlockLevelOfHeavyTower()
         {
             return PlayerPrefs.HasKey(Key.HEAVY_TOWER_LEVEL)
                 ? new Optional<int>(PlayerPrefs.GetInt(Key.HEAVY_TOWER_LEVEL))
