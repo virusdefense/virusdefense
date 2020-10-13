@@ -39,7 +39,7 @@ namespace Tower
             var dir = _target.transform.position - transform.position;
             var look = Quaternion.LookRotation(dir);
             var rotation = Quaternion.Lerp(partToRotate.rotation, look, Time.deltaTime * 8);
-            partToRotate.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
+            partToRotate.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, rotation.eulerAngles.z);
 
             if (_countDown > 0) return;
 
