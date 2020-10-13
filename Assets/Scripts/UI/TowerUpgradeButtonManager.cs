@@ -2,6 +2,7 @@ using Tower;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using Utils.Messenger;
 using Utils.Settings;
 
 namespace UI
@@ -36,11 +37,11 @@ namespace UI
 
         private void OnClick()
         {
-            Debug.Log("Click");
-
             SettingHelper.IncreaseSpendsFound(_unlockPrice);
             SettingHelper.SetUnlockedTowerLevel(type, _level);
 
+            Messenger.Broadcast(GameEvent.UPGRADE_PURCHASED);
+            
             UpdateUI();
         }
 
