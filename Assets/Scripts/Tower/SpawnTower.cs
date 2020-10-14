@@ -64,10 +64,10 @@ namespace Tower
         {
             Debug.Log($"type: {type}, level: {towerLevel}");
             var index = (uint) type + (towerLevel - 1) * 3;
-            _towerHeight = towers[index].transform.localScale.y;
+            //_towerHeight = towers[index].transform.localScale.y;
             _instantiateTower = Instantiate(
                 towers[index],
-                PositionHelper.OnTop(transform, _towerHeight / 2),
+                PositionHelper.OnTop(transform, 0.2f),
                 Quaternion.identity
             );
             _instantiateTowerState = _instantiateTower.GetComponent<TowerState>();

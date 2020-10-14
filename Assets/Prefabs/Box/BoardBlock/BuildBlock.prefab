@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towers:
   - {fileID: 0}
-  - {fileID: 2452227741705693277, guid: 0ed6bfb90155bb74c8c6fdfe1039e4f9, type: 3}
+  - {fileID: 9138062386594958737, guid: be422459a840785f0b7cee96d62b2988, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 2775717347504165605, guid: c9b509d31e898e1c7a635c11155366a7, type: 3}
