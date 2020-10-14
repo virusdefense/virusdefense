@@ -769,6 +769,7 @@ GameObject:
   - component: {fileID: 529190298417655125}
   - component: {fileID: 7629722757065265853}
   - component: {fileID: 3096188381595545635}
+  - component: {fileID: 4238217796792767971}
   m_Layer: 5
   m_Name: GameWinGameOver
   m_TagString: Untagged
@@ -856,6 +857,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4238217796792767971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234112835886934745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46e624a5c88b4537b1169f5c607d94e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiCanvas: {fileID: 529190298417655125}
+  scoreBlock: {fileID: 8064766015361206075}
+  text: {fileID: 8086983596373865578}
+  score1: {fileID: 7410663291126676619}
+  score2: {fileID: 528605814550425949}
+  score3: {fileID: 1202177070711863521}
+  againButton: {fileID: 5570480600296018492}
+  nextButton: {fileID: 7289199259728472561}
+  homeButton: {fileID: 8368914289133558133}
 --- !u!1 &8294615809165146182
 GameObject:
   m_ObjectHideFlags: 0

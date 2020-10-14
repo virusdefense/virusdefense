@@ -1,5 +1,6 @@
 using System;
 using Player;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils.Messenger;
@@ -11,13 +12,17 @@ namespace Manager
     {
         private PlayerState _playerState;
         private GameManager _gameManager;
+        private GameOverWinUIManager _gameOverWinUIManager;
         private Boolean _isDone;
         private void Awake()
         {
             Messenger.AddListener(GameEvent.RELOAD_SCENE, OnReloadScene);
             Messenger.AddListener(GameEvent.MAIN_MENU,OnLoadMainMenu);
+            Messenger.AddListener(GameEvent.NEXT_LEVEL, OnLoadNextLevel);
+            
             _playerState = FindObjectOfType<PlayerState>();
             _gameManager = FindObjectOfType<GameManager>();
+            _gameOverWinUIManager = FindObjectOfType<GameOverWinUIManager>();
         }
 
         private void Update()
@@ -34,13 +39,17 @@ namespace Manager
         {
             var score = _playerState.GetScore();
             EndLevelSaves(score);
+            
+            _gameOverWinUIManager.OnGameWin(score);
 
             _isDone = true;
         }
         
         private void OnGameOver()
         {
-            
+            _gameOverWinUIManager.OnGameOver();
+
+            _isDone = true;
         }
         private void EndLevelSaves(int newScore)
         {
@@ -69,6 +78,7 @@ namespace Manager
         {
             Messenger.RemoveListener(GameEvent.RELOAD_SCENE, OnReloadScene);
             Messenger.RemoveListener(GameEvent.MAIN_MENU, OnLoadMainMenu);
+            Messenger.RemoveListener(GameEvent.NEXT_LEVEL, OnLoadNextLevel);
         }
 
         private void OnReloadScene()
@@ -80,6 +90,12 @@ namespace Manager
         {
             //TODO
             Debug.Log("Load Main Menu");
+        }
+
+        private void OnLoadNextLevel()
+        {
+            //TODO
+            Debug.Log("Load next level");
         }
     }
 }
