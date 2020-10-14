@@ -1,4 +1,4 @@
-fireRate 1.2
+fireRate 1,2
 range 8
 price 200
 bulletSpeed 80
