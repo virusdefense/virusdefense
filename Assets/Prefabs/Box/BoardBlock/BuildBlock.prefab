@@ -107,12 +107,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towers:
-  - {fileID: 0}
-  - {fileID: 2452227741705693277, guid: 0ed6bfb90155bb74c8c6fdfe1039e4f9, type: 3}
-  - {fileID: 8356052466543894388, guid: a1e65a926d5eabfbca1105673f1d92b2, type: 3}
-  - {fileID: 0}
-  - {fileID: 2775717347504165605, guid: c9b509d31e898e1c7a635c11155366a7, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2476642630574579813, guid: b76cf55c29587839d8f3752a09603797, type: 3}
+  - {fileID: 6248202602560506970, guid: 96e4a2c3feac206009e83d4bd7696417, type: 3}
+  - {fileID: 8147757390749108996, guid: e7ffc26a86d8bcd598d3922dc25514fb, type: 3}
+  - {fileID: 8644353182855600224, guid: 49b7aab6e81fc112fa182dc4c7f76ef6, type: 3}
+  - {fileID: 6183150418805675912, guid: be422459a840785f0b7cee96d62b2988, type: 3}
+  - {fileID: 1934175580552170889, guid: e18fe2e0f0172b097ab20a14809b4558, type: 3}
+  - {fileID: 3449456908581034181, guid: af935832eb56631c191e4a77e3ccaa4c, type: 3}
+  - {fileID: 6771522964903576767, guid: 1c5f8bd04aa4ddc7d80a154d925911fd, type: 3}
+  - {fileID: 5315527466044700721, guid: 2d18280aa45bea164a560f2bd7fba43e, type: 3}
