@@ -1,4 +1,6 @@
-fireRate 1
+fireRate 0,8
 range 7
 price 100
+bulletSpeed 60
+bulletDamage 4
 name Light

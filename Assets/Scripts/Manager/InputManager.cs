@@ -78,6 +78,7 @@ namespace Manager
         public void OnAirHeavyTowerSelect()
         {
             Debug.Log("Click Air Heavy Tower");
+            BuildTower(TowerType.Type.AIR_HEAVY);
         }
 
         public void OnExit()

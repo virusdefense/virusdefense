@@ -1,4 +1,5 @@
 using System;
+using Tower;
 using UnityEngine;
 
 namespace Utils.Settings
@@ -59,25 +60,81 @@ namespace Utils.Settings
                 : new Optional<int>();
         }
 
-        public static Optional<int> GetUnlockLevelOfGroundTower()
+        public static void SetUnlockedTowerLevel(TowerType.Type type, int level)
+        {
+            var key = Key.GROUND_TOWER_LEVEL;
+
+            if (type == TowerType.Type.AIR_LIGHT)
+                key = Key.LIGHT_TOWER_LEVEL;
+            else if (type == TowerType.Type.AIR_HEAVY)
+                key = Key.HEAVY_TOWER_LEVEL;
+
+            PlayerPrefs.SetInt(key, level);
+        }
+
+        public static Optional<int> GetUnlockTowerLevel(TowerType.Type type)
+        {
+            if (type == TowerType.Type.GROUND)
+                return GetUnlockLevelOfGroundTower();
+            if (type == TowerType.Type.AIR_LIGHT)
+                return GetUnlockLevelOfLightTower();
+
+            return GetUnlockLevelOfHeavyTower();
+        }
+
+        private static Optional<int> GetUnlockLevelOfGroundTower()
         {
             return PlayerPrefs.HasKey(Key.GROUND_TOWER_LEVEL)
                 ? new Optional<int>(PlayerPrefs.GetInt(Key.GROUND_TOWER_LEVEL))
                 : new Optional<int>();
         }
 
-        public static Optional<int> GetUnlockLevelOfLightTower()
+        private static Optional<int> GetUnlockLevelOfLightTower()
         {
             return PlayerPrefs.HasKey(Key.LIGHT_TOWER_LEVEL)
                 ? new Optional<int>(PlayerPrefs.GetInt(Key.LIGHT_TOWER_LEVEL))
                 : new Optional<int>();
         }
 
-        public static Optional<int> GetUnlockLevelOfHeavyTower()
+        private static Optional<int> GetUnlockLevelOfHeavyTower()
         {
             return PlayerPrefs.HasKey(Key.HEAVY_TOWER_LEVEL)
                 ? new Optional<int>(PlayerPrefs.GetInt(Key.HEAVY_TOWER_LEVEL))
                 : new Optional<int>();
+        }
+
+        public static int GetTotalFounds()
+        {
+            var founds = 0;
+            var level = 1;
+
+            while (IsLevelCompleted(level).GetOrDefault(false))
+            {
+                founds += GetLevelScore(level).GetOrDefault(0);
+                level++;
+            }
+
+            return founds;
+        }
+
+        public static Optional<int> GetTotalSpendsFound()
+        {
+            return PlayerPrefs.HasKey(Key.TOTAL_SPEND_FOUND)
+                ? new Optional<int>(PlayerPrefs.GetInt(Key.TOTAL_SPEND_FOUND))
+                : new Optional<int>();
+        }
+
+        public static int GetAvailableFounds()
+        {
+            return GetTotalFounds() - GetTotalSpendsFound().GetOrDefault(0);
+        }
+
+        public static void IncreaseSpendsFound(int spend)
+        {
+            PlayerPrefs.SetInt(
+                Key.TOTAL_SPEND_FOUND,
+                GetTotalSpendsFound().GetOrDefault(0) + spend
+            );
         }
     }
 }
