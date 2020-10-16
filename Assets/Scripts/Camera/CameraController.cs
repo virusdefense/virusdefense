@@ -7,28 +7,28 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] public int level;
 
+    public Camera m_MainCamera;
+
+    //Position camera
+    private float positionX;
+    private float positionY;
+    private float positionZ;
+
     //Rotation camera
     private float rotationX = 65f;
     private float rotationY = -90f;
     private float rotationZ = 0f;
 
-    //Position camera
-    private float positionX;
-    private float positionY = 20f;
-    private float positionZ;
+    private float offsetScroll = 0.25f;
+    private float offsetPosition = 10f;
 
-    //public GameObject mainCamera;
-    public Camera m_MainCamera;
-
-    //Velocità movimento 
+    //speed
     public float panSpeed = 30f;
-
-    //public float panBoardTickness = 10f;
+    private float scrollSpeed = 5f;
 
     //scroll param
-    private float scrollSpeed = 5f;
-    private float minY = 15f;
-    private float maxY = 25f;
+    private float minY;
+    private float maxY;
 
     // Start is called before the first frame update
     void Start()
@@ -36,10 +36,14 @@ public class CameraController : MonoBehaviour
         var board = ReadBoard(level);
         var rowNumber = board.Count;
         var columnNumber = board[0].Count;
-        Debug.Log(rowNumber + ", " + columnNumber);
+        Debug.Log("row: " + rowNumber + ", " + "column: " + columnNumber );
 
         positionX = rowNumber*2;
         positionZ = columnNumber;
+        positionY = columnNumber;
+
+        minY = positionY - (positionY * offsetScroll);
+        maxY = positionY + (positionY * offsetScroll);
 
         m_MainCamera = Camera.main;
         m_MainCamera.enabled = true;
@@ -55,20 +59,20 @@ public class CameraController : MonoBehaviour
         Debug.Log("" + m_MainCamera.transform.position.x);
         Debug.Log("" + transform.position.x);
 
-        if (Input.GetKey("d") && m_MainCamera.transform.position.z <= positionZ+10)
+        if (Input.GetKey("d") && m_MainCamera.transform.position.z <= positionZ + offsetPosition)
         {
             m_MainCamera.transform.Translate(Vector3.forward * panSpeed * Time.deltaTime, Space.World);
         }
-        if (Input.GetKey("a") && m_MainCamera.transform.position.z >= positionZ-10)
+        if (Input.GetKey("a") && m_MainCamera.transform.position.z >= positionZ - offsetPosition)
         {
             m_MainCamera.transform.Translate(Vector3.back * panSpeed * Time.deltaTime, Space.World);
         }
-        if (Input.GetKey("w") && m_MainCamera.transform.position.x >= positionX - 10)
+        if (Input.GetKey("w") && m_MainCamera.transform.position.x >= positionX - offsetPosition)
         {
             m_MainCamera.transform.Translate(Vector3.left * panSpeed * Time.deltaTime, Space.World);
         }
 
-        if (Input.GetKey("s") && m_MainCamera.transform.position.x <= positionX + 5)
+        if (Input.GetKey("s") && m_MainCamera.transform.position.x <= positionX + offsetPosition/2)
         {
             m_MainCamera.transform.Translate(Vector3.right * panSpeed * Time.deltaTime, Space.World);
         }
