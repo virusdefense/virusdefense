@@ -14,12 +14,13 @@ namespace Manager
         private GameManager _gameManager;
         private GameOverWinUIManager _gameOverWinUIManager;
         private Boolean _isDone;
+
         private void Awake()
         {
             Messenger.AddListener(GameEvent.RELOAD_SCENE, OnReloadScene);
-            Messenger.AddListener(GameEvent.MAIN_MENU,OnLoadMainMenu);
+            Messenger.AddListener(GameEvent.MAIN_MENU, OnLoadMainMenu);
             Messenger.AddListener(GameEvent.NEXT_LEVEL, OnLoadNextLevel);
-            
+
             _playerState = FindObjectOfType<PlayerState>();
             _gameManager = FindObjectOfType<GameManager>();
             _gameOverWinUIManager = FindObjectOfType<GameOverWinUIManager>();
@@ -31,32 +32,34 @@ namespace Manager
 
             if (_gameManager.IsGameOver)
                 OnGameOver();
-            if(_gameManager.IsGameWon)
+            if (_gameManager.IsGameWon)
                 OnGameWin();
         }
 
         private void OnGameWin()
         {
             var score = _playerState.GetScore();
+
             EndLevelSaves(score);
-            
-            _gameOverWinUIManager.OnGameWin(score);
+
+            _gameOverWinUIManager.OnGameWin(score, _playerState.level);
 
             _isDone = true;
         }
-        
+
         private void OnGameOver()
         {
             _gameOverWinUIManager.OnGameOver();
 
             _isDone = true;
         }
+
         private void EndLevelSaves(int newScore)
         {
             Debug.Log("Save");
-            
+
             var level = _playerState.level;
-            
+
             SettingHelper.SetLevelAsCompleted(level);
 
             var oldScore = SettingHelper.GetLevelScore(level)
@@ -93,8 +96,10 @@ namespace Manager
 
         private void OnLoadNextLevel()
         {
-            //TODO
-            Debug.Log("Load next level");
+            var nextLevel = _playerState.level + 1;
+            SceneManager.LoadScene(string.Format(SceneName, nextLevel.ToString("00")));
         }
+
+        private const string SceneName = "Scenes/Levels/Level_{0}";
     }
 }
