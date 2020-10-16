@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enemy.Wave;
 using UnityEngine;
+using Utils;
 using Utils.Messenger;
 
 namespace Enemy.Spawn
@@ -53,9 +54,14 @@ namespace Enemy.Spawn
         {
             for (var i = 0; i < number; i++)
             {
+                var enemyPrefab = enemies[(uint) enemyType];
+
                 var enemy = Instantiate(
-                    enemies[(uint) enemyType],
-                    _spawnPosition,
+                    enemyPrefab,
+                    PositionHelper.OnTop(
+                        transform,
+                        enemyPrefab.transform.localScale.y / 2
+                    ),
                     Quaternion.identity
                 );
 
