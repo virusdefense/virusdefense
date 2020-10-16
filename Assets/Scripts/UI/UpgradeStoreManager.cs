@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils.Messenger;
 using Utils.Settings;
@@ -15,9 +16,9 @@ namespace UI
             Messenger.AddListener(GameEvent.UPGRADE_PURCHASED, OnPurchased);
 
             homeButton.onClick.AddListener(() =>
-                    Debug.Log("Load main menu") // TODO
+                SceneManager.LoadScene("Scenes/Select Level Scene")
             );
-            
+
             UpdateUI();
         }
 

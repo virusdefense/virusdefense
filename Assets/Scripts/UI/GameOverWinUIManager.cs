@@ -1,8 +1,7 @@
-using System;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Messenger;
+using Utils.Settings;
 
 namespace UI
 {
@@ -21,26 +20,33 @@ namespace UI
         private void Awake()
         {
             uiCanvas.enabled = false;
-            
-            againButton.onClick.AddListener((() => 
-                    Messenger.Broadcast(GameEvent.RELOAD_SCENE)));
-            
-            homeButton.onClick.AddListener((() => 
-                    Messenger.Broadcast(GameEvent.MAIN_MENU)));
-            
-            nextButton.onClick.AddListener((() => 
-                    Messenger.Broadcast(GameEvent.NEXT_LEVEL)));
+
+            againButton.onClick.AddListener(() =>
+                Messenger.Broadcast(GameEvent.RELOAD_SCENE)
+            );
+
+            homeButton.onClick.AddListener(() =>
+                Messenger.Broadcast(GameEvent.MAIN_MENU)
+            );
+
+            nextButton.onClick.AddListener(() =>
+                Messenger.Broadcast(GameEvent.NEXT_LEVEL)
+            );
         }
 
-        public void OnGameWin(int score)
+        public void OnGameWin(int score, int level)
         {
-            scoreBlock.SetActive(true);
             text.text = "Game Win!";
+
+            scoreBlock.SetActive(true);
             score1.enabled = score >= 1;
             score2.enabled = score >= 2;
             score3.enabled = score >= 3;
-            uiCanvas.enabled = true;
 
+            nextButton.interactable = SettingHelper.IsLevelUnlocked(level + 1)
+                .GetOrDefault(false);
+
+            uiCanvas.enabled = true;
         }
 
         public void OnGameOver()
