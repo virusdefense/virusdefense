@@ -16,7 +16,6 @@ namespace Player
         private int _coin;
         private int _initialCoin;
         private int _totalDamage;
-        private bool _isDone;
         private int _unlockNext;
         private GameManager _gameManager;
 
@@ -24,6 +23,8 @@ namespace Player
         public float HealthRatio => (float) Health / _defaultHealth;
         public float ReturnRate => _defaultReturnRate;
         public int Coin => _coin;
+        public int Level => level;
+        public int UnlockNext => _unlockNext;
 
         private void Awake()
         {
@@ -57,39 +58,13 @@ namespace Player
 
         private void LateUpdate()
         {
-            if (_isDone) return;
-
             if (Health <= 0 && _gameManager.IsGameOnPlay)
                 Messenger.Broadcast(GameEvent.OVER);
-
-            if (!_gameManager.IsGameWon) return;
-
-            EndLevelSaves();
-            _isDone = true;
         }
 
-        private void EndLevelSaves()
-        {
-            Debug.Log("Save");
-            SettingHelper.SetLevelAsCompleted(level);
+        
 
-            var oldScore = SettingHelper.GetLevelScore(level)
-                .GetOrDefault(0);
-            var newScore = GetScore();
-
-            Debug.Log($"oldScore {oldScore}");
-            Debug.Log($"newScore: {newScore}");
-
-            if (newScore > oldScore)
-                SettingHelper.SetLevelScore(level, newScore);
-
-            for (var i = 1; i <= _unlockNext; i++)
-            {
-                SettingHelper.SetLevelAsUnlocked(level + i);
-            }
-        }
-
-        private int GetScore()
+        public int GetScore()
         {
             var score = Mathf.RoundToInt(
                 ((float) _coin / _initialCoin * CoinWeight

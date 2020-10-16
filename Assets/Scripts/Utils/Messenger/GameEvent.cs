@@ -17,6 +17,7 @@ namespace Utils.Messenger
         public const string TOWER_MENU_OPEN = "TOWER_MENU_OPEN";
         public const string RELOAD_SCENE = "RELOAD_SCENE";
         public const string MAIN_MENU = "MAIN_MENU";
+        public const string NEXT_LEVEL = "NEXT_LEVEL";
         public const string UPGRADE_PURCHASED = "UPGRADE_PURCHASED";
     }
 }
