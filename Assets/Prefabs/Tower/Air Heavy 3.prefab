@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a892ff163894067ad333348791f0d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 2083315105756234690, guid: 2c831fc4206803e259c8c491b952d903, type: 3}
+  bullet: {fileID: 5972164944162825103, guid: 4b55003d5a7343c4e9bb01a3a5b6b6e2, type: 3}
   partToRotate: {fileID: 5315527466044531733}
 --- !u!114 &303570019539088923
 MonoBehaviour:
