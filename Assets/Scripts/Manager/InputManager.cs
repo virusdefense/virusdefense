@@ -39,6 +39,7 @@ namespace Manager
             }
             else if (hit.CompareTag(Tag.TowerTag))
             {
+                Debug.Log("Click o tower");
                 _selectedTowerState = hit.GetComponent<TowerState>();
                 _selectedBlock = _selectedTowerState.Block;
                 OpenUpdateSellMenu();
@@ -50,7 +51,10 @@ namespace Manager
             if (_selectedBlock.IsFreeBlock)
                 Messenger.Broadcast(GameEvent.STORE_OPEN);
             else
+            {
+                _selectedTowerState = _selectedBlock.Tower.GetComponent<TowerState>();
                 OpenUpdateSellMenu();
+            }
         }
 
         private void OpenUpdateSellMenu()
@@ -74,6 +78,7 @@ namespace Manager
         public void OnAirHeavyTowerSelect()
         {
             Debug.Log("Click Air Heavy Tower");
+            BuildTower(TowerType.Type.AIR_HEAVY);
         }
 
         public void OnExit()
