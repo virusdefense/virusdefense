@@ -6,6 +6,8 @@ namespace Enemy.Wave
         int NumberOfTotalWaves();
         int NumberOfPendingWaves();
         int NumberOfSpawnedWaves();
+        int NumberOfStartedWaves();
         bool IsCompleted();
+        bool IsStarted();
     }
 }

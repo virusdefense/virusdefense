@@ -26,6 +26,11 @@ namespace Enemy.Wave
             return _isSpawned;
         }
 
+        public bool IsStarted()
+        {
+            return _isSpawned;
+        }
+
         public int NumberOfTotalWaves()
         {
             return 1;
@@ -37,6 +42,11 @@ namespace Enemy.Wave
         }
 
         public int NumberOfSpawnedWaves()
+        {
+            return _isSpawned ? 1 : 0;
+        }
+
+        public int NumberOfStartedWaves()
         {
             return _isSpawned ? 1 : 0;
         }
