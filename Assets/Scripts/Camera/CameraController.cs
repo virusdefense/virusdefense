@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using InputControllers;
 
 public class CameraController : MonoBehaviour
 {
@@ -9,13 +10,15 @@ public class CameraController : MonoBehaviour
 
     public Camera m_MainCamera;
 
+    protected BaseInputController myInputController;
+
     //Position camera
     private float positionX;
     private float positionY;
     private float positionZ;
 
     //Rotation camera
-    private float rotationX = 65f;
+    private float rotationX = 50f;
     private float rotationY = -90f;
     private float rotationZ = 0f;
 
@@ -23,7 +26,7 @@ public class CameraController : MonoBehaviour
     private float offsetPosition = 10f;
 
     //speed
-    public float panSpeed = 30f;
+    private float panSpeed = 30f;
     private float scrollSpeed = 5f;
 
     //scroll param
@@ -38,7 +41,7 @@ public class CameraController : MonoBehaviour
         var columnNumber = board[0].Count;
         Debug.Log("row: " + rowNumber + ", " + "column: " + columnNumber );
 
-        positionX = rowNumber*2;
+        positionX = (rowNumber*2) + offsetPosition;
         positionZ = columnNumber;
         positionY = columnNumber;
 
@@ -51,6 +54,8 @@ public class CameraController : MonoBehaviour
         m_MainCamera.transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
         m_MainCamera.transform.position = new Vector3(positionX, positionY, positionZ);
 
+        myInputController = new KeyboardInput();
+
     }
 
     // Update is called once per frame
@@ -59,34 +64,38 @@ public class CameraController : MonoBehaviour
         Debug.Log("" + m_MainCamera.transform.position.x);
         Debug.Log("" + transform.position.x);
 
-        if (Input.GetKey("d") && m_MainCamera.transform.position.z <= positionZ + offsetPosition)
+        MoveCamera();
+
+    }
+
+    protected void MoveCamera()
+    {
+        myInputController.CheckInput();
+
+        if (myInputController.Right && m_MainCamera.transform.position.z <= positionZ + offsetPosition)
         {
             m_MainCamera.transform.Translate(Vector3.forward * panSpeed * Time.deltaTime, Space.World);
         }
-        if (Input.GetKey("a") && m_MainCamera.transform.position.z >= positionZ - offsetPosition)
+        if (myInputController.Left && m_MainCamera.transform.position.z >= positionZ - offsetPosition)
         {
             m_MainCamera.transform.Translate(Vector3.back * panSpeed * Time.deltaTime, Space.World);
         }
-        if (Input.GetKey("w") && m_MainCamera.transform.position.x >= positionX - offsetPosition)
+        if (myInputController.Up && m_MainCamera.transform.position.x >= positionX - offsetPosition)
         {
             m_MainCamera.transform.Translate(Vector3.left * panSpeed * Time.deltaTime, Space.World);
         }
 
-        if (Input.GetKey("s") && m_MainCamera.transform.position.x <= positionX + offsetPosition/2)
+        if (myInputController.Down && m_MainCamera.transform.position.x <= positionX + offsetPosition / 2)
         {
             m_MainCamera.transform.Translate(Vector3.right * panSpeed * Time.deltaTime, Space.World);
         }
 
-
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
         Vector3 pos = m_MainCamera.transform.position;
 
-        pos.y -= scroll * 1000 * scrollSpeed * Time.deltaTime;
+        pos.y -= myInputController.Scroll * 1000 * scrollSpeed * Time.deltaTime;
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
 
         m_MainCamera.transform.position = pos;
-
     }
 
     private static List<List<char>> ReadBoard(int level)
