@@ -1,5 +1,5 @@
+using Controller;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI
@@ -10,8 +10,8 @@ namespace UI
 
         private void Awake()
         {
-            storeButton.onClick.AddListener(() =>
-                SceneManager.LoadScene("Scenes/Store scene")
+            storeButton.onClick.AddListener(
+                SelectLevelController.LoadUpgradeStore
             );
         }
     }

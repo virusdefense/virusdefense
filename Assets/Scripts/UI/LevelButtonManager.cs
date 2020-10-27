@@ -1,5 +1,5 @@
+using Controller;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils.Settings;
 
@@ -28,10 +28,8 @@ namespace UI
             score3.enabled = score >= 3;
 
             button.onClick.AddListener(() =>
-                SceneManager.LoadScene(string.Format(SceneName, level.ToString("00")))
+                SelectLevelController.LoadLevel(level)
             );
         }
-
-        private const string SceneName = "Scenes/Levels/Level_{0}";
     }
 }
