@@ -20,14 +20,11 @@ namespace Enemy
         public void Update()
         {
             if (_path == null)
-            {
-                _path = PathManager.GetInstance().SelectNearestPath(transform.position);
-                _state.targetPosition = _path.Last();
-            }
+                RetrievePath();
             else
             {
                 if (!_state.IsMoving) return;
-                
+
                 if (Vector3.Distance(transform.position, _path[_pointIndex]) < 0.001f)
                 {
                     if (_pointIndex + 1 < _path.Count)
@@ -39,6 +36,19 @@ namespace Enemy
                 var step = _state.Speed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, _path[_pointIndex], step);
             }
+        }
+
+        private void RetrievePath()
+        {
+            var position = transform.position;
+            var yPosition = position.y;
+
+            _path = PathManager
+                .GetInstance().SelectNearestPath(position)
+                .Select(v => new Vector3(v.x, yPosition, v.z))
+                .ToList();
+
+            _state.targetPosition = _path.Last();
         }
 
         private void OnReachTarget()
