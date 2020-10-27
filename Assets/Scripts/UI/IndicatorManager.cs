@@ -1,5 +1,3 @@
-using System;
-using Enemy;
 using Enemy.Spawn;
 using Enemy.Wave;
 using Player;
@@ -34,7 +32,7 @@ namespace UI
                 lifeLabel.text = "0";
             }
 
-            waveLabel.text = $"{_waves.NumberOfSpawnedWaves()} / {_waves.NumberOfTotalWaves()}";
+            waveLabel.text = $"{_waves.NumberOfStartedWaves()} / {_waves.NumberOfTotalWaves()}";
         }
     }
 }

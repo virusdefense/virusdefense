@@ -19,6 +19,12 @@ namespace Enemy.Wave
                 .Aggregate(true, (acc, wave) => acc && wave.IsCompleted());
         }
 
+        public bool IsStarted()
+        {
+            return _subWaves
+                .Aggregate(false, (acc, wave) => acc || wave.IsStarted());
+        }
+
         public int NumberOfTotalWaves()
         {
             return _subWaves.Count;
@@ -28,6 +34,12 @@ namespace Enemy.Wave
         {
             return _subWaves
                 .Aggregate(0, (acc, wave) => wave.IsCompleted() ? acc + 1 : acc);
+        }
+
+        public int NumberOfStartedWaves()
+        {
+            return _subWaves
+                .Aggregate(0, (acc, wave) => wave.IsStarted() ? acc + 1 : acc);
         }
 
         public int NumberOfPendingWaves()
