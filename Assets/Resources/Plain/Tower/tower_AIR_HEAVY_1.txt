@@ -1,2 +1,7 @@
 price 150
 name Heavy
+fireRate 0,5
+range 7
+bulletSpeed 40
+bulletDamage 5
+bulletRange 3

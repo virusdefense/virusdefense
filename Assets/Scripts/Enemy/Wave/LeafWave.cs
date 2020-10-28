@@ -11,7 +11,6 @@ namespace Enemy.Wave
         private bool _isSpawned;
 
         private readonly EnemySpawner _enemySpawner;
-
         private readonly Dictionary<Enemy.Type, int> _enemies;
 
         public LeafWave(Dictionary<Enemy.Type, int> enemies, EnemySpawner enemySpawner, float startTime, float endTime)
@@ -20,6 +19,36 @@ namespace Enemy.Wave
             _enemySpawner = enemySpawner;
             _waveDuration = endTime - startTime;
             _countDown = startTime;
+        }
+
+        public bool IsCompleted()
+        {
+            return _isSpawned;
+        }
+
+        public bool IsStarted()
+        {
+            return _isSpawned;
+        }
+
+        public int NumberOfTotalWaves()
+        {
+            return 1;
+        }
+
+        public int NumberOfPendingWaves()
+        {
+            return _isSpawned ? 0 : 1;
+        }
+
+        public int NumberOfSpawnedWaves()
+        {
+            return _isSpawned ? 1 : 0;
+        }
+
+        public int NumberOfStartedWaves()
+        {
+            return _isSpawned ? 1 : 0;
         }
 
         public void Spawn(float deltaTime)

@@ -33,8 +33,8 @@ namespace UI
         {
             if (!_needToUpdate) return;
 
-            var level = GetUnlockedTowerLevel()
-                .GetOrElse(() => 1);
+            var level = SettingHelper.GetUnlockTowerLevel(_towerType)
+                .GetOrDefault(1);
 
             if (_towerLevel == level)
             {
@@ -72,26 +72,6 @@ namespace UI
         private void OnCoinChange()
         {
             _needToUpdate = true;
-        }
-
-        private Optional<int> GetUnlockedTowerLevel()
-        {
-            Optional<int> unlockedLevel = null;
-
-            switch (_towerType)
-            {
-                case TowerType.Type.GROUND:
-                    unlockedLevel = SettingHelper.GetUnlockLevelOfGroundTower();
-                    break;
-                case TowerType.Type.AIR_LIGHT:
-                    unlockedLevel = SettingHelper.GetUnlockLevelOfLightTower();
-                    break;
-                case TowerType.Type.AIR_HEAVY:
-                    unlockedLevel = SettingHelper.GetUnlockLevelOfHeavyTower();
-                    break;
-            }
-
-            return unlockedLevel;
         }
 
         private void SetFeature(string featureName, string featureValue)

@@ -1,17 +1,25 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Enemy.Wave;
 using UnityEngine;
+using Utils;
+using Utils.Messenger;
 
 namespace Enemy.Spawn
 {
     public class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private GameObject[] enemies;
+        private readonly List<GameObject> _spawnedEnemies = new List<GameObject>();
+        private bool _isCompleted;
 
         private Vector3 _spawnPosition;
         private IWave _wave;
 
         private string _filePath;
+
+        public IWave Waves => _wave;
 
         public void Start()
         {
@@ -21,7 +29,14 @@ namespace Enemy.Spawn
 
         public void Update()
         {
+            if (_isCompleted) return;
+
             _wave?.Spawn(Time.deltaTime);
+
+            if (_wave != null && (!_wave.IsCompleted() || IsAnyEnemyAlive())) return;
+
+            Messenger.Broadcast(GameEvent.SPAWN_END);
+            _isCompleted = true;
         }
 
         public void Spawn(Enemy.Type enemyType, int number, float elapseBetweenEnemy)
@@ -32,18 +47,36 @@ namespace Enemy.Spawn
         public void ReadWaves(string filePath)
         {
             _wave = SpawnParser.Parse(filePath, this);
-            Debug.Log(_wave.ToString());
+            Debug.Log($"Number of waves: {_wave.NumberOfTotalWaves()}");
         }
 
         private IEnumerator SpawnCoroutine(Enemy.Type enemyType, int number, float elapseBetweenEnemy)
         {
             for (var i = 0; i < number; i++)
             {
-                Instantiate(enemies[(uint) enemyType]).transform.position = _spawnPosition;
+                var enemyPrefab = enemies[(uint) enemyType];
+
+                var enemy = Instantiate(
+                    enemyPrefab,
+                    PositionHelper.OnTop(
+                        transform,
+                        enemyPrefab.transform.localScale.y / 2
+                    ),
+                    Quaternion.identity
+                );
+
+                _spawnedEnemies.Add(enemy);
+
                 yield return new WaitForSeconds(elapseBetweenEnemy);
             }
         }
 
-        
+        private bool IsAnyEnemyAlive()
+        {
+            return _spawnedEnemies
+                .Where(e => e != null)
+                .ToList()
+                .Count != 0;
+        }
     }
 }

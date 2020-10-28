@@ -17,6 +17,9 @@ namespace Tower
         private float _defaultTrainingTime;
         private float _defaultDamage;
         private int _defaultShootersNumber;
+        private float _bulletSpeed;
+        private float _bulletDamage;
+        private float _bulletRange;
 
         public float Range => _defaultRange;
         public float FireRate => _defaultFireRate;
@@ -27,6 +30,9 @@ namespace Tower
         public float ShootersNumber => _defaultShootersNumber;
         public TowerType.Type Type => type;
         public int TowerLevel => towerLevel;
+        public float BulletDamage => _bulletDamage;
+        public float BulletSpeed => _bulletSpeed;
+        public float BulletRange => _bulletRange;
 
         public SpawnTower Block { get; set; }
 
@@ -67,6 +73,15 @@ namespace Tower
                     break;
                 case "shootersNumber":
                     _defaultShootersNumber = int.Parse(featureValue);
+                    break;
+                case "bulletSpeed":
+                    _bulletSpeed = float.Parse(featureValue);
+                    break;
+                case "bulletDamage":
+                    _bulletDamage = float.Parse(featureValue);
+                    break;
+                case "bulletRange":
+                    _bulletRange = float.Parse(featureValue);
                     break;
             }
         }

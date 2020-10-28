@@ -3,6 +3,7 @@ using System.Linq;
 using Board;
 using Enemy.Spawn;
 using UnityEngine;
+using Utils.Messenger;
 using Utils.Path.AStar;
 
 public class BoardBuilder : MonoBehaviour
@@ -93,6 +94,8 @@ public class BoardBuilder : MonoBehaviour
             ).ToList();
 
         PathManager.GetInstance().Paths = realWorldPaths;
+
+        Messenger<int>.Broadcast(GameEvent.BOARD_BUILD, spawnNumber);
     }
 
     private static List<List<char>> ReadBoard(int level)

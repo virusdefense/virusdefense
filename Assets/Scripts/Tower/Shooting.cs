@@ -10,7 +10,8 @@ namespace Tower
     {
         [SerializeField] public GameObject bullet;
 
-        private GameObject _target;
+        private Transform _target;
+        public Transform partToRotate;
         private readonly Collider[] _nearObjects = new Collider[NearObjectsArraySize];
         private float _countDown;
         private TowerState _state;
@@ -30,10 +31,15 @@ namespace Tower
         public void LateUpdate()
         {
             _countDown -= Time.deltaTime;
+            
+            if (_target == null) return;
+            
+            var dir = _target.transform.position - transform.position;
+            var look = Quaternion.LookRotation(dir);
+            var rotation = Quaternion.Lerp(partToRotate.rotation, look, Time.deltaTime * 8);
+            partToRotate.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, rotation.eulerAngles.z);
 
             if (_countDown > 0) return;
-
-            if (_target == null) return;
 
             Shoot();
             _countDown = 1f / _state.FireRate;
@@ -47,18 +53,22 @@ namespace Tower
                 Quaternion.identity
             );
 
-            bulletGO.GetComponent<Bullet>().Seek(_target.transform);
+            if (_state.Type == TowerType.Type.AIR_LIGHT)
+                LightShootStrategy(bulletGO, _target);
+            else
+                HeavyShootStrategy(bulletGO, _target);
         }
 
         private void UpdateTarget()
         {
             ClearNearObjectsArray();
-            var size = Physics.OverlapSphereNonAlloc(transform.position, _state.Range, _nearObjects);
+            Physics.OverlapSphereNonAlloc(transform.position, _state.Range, _nearObjects);
 
             var nearEnemies = _nearObjects
                 .Where(obj => obj != null && obj.CompareTag(Tag.EnemyTag));
 
-            _target = SelectEnemy(nearEnemies);
+            var enemy = SelectEnemy(nearEnemies);
+            _target = enemy == null ? null : enemy.transform;
         }
 
         private static GameObject SelectEnemy(IEnumerable<Collider> enemies)
@@ -77,6 +87,18 @@ namespace Tower
             }
 
             return closestToTarget;
+        }
+
+        private void LightShootStrategy(GameObject bulletGO, Transform target)
+        {
+            bulletGO.GetComponent<Bullet>()
+                .Shoot(target, _state.BulletSpeed, _state.BulletDamage);
+        }
+
+        private void HeavyShootStrategy(GameObject bulletGO, Transform target)
+        {
+            bulletGO.GetComponent<Bullet>()
+                .Shoot(target, _state.BulletSpeed, _state.BulletDamage, _state.BulletRange);
         }
 
         /*
