@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UI.Level;
 using UnityEngine;
@@ -22,6 +23,8 @@ namespace UI
         [SerializeField] private Button homeButton;
 
         private PlayerState _playerState;
+        private float _currentFill;
+        private float _fillTarget;
 
         private void Awake()
         {
@@ -40,6 +43,22 @@ namespace UI
             nextButton.onClick.AddListener(() =>
                 Messenger.Broadcast(GameEvent.NEXT_LEVEL)
             );
+
+            score1.fillAmount = 0;
+            score2.fillAmount = 0;
+            score3.fillAmount = 0;
+        }
+
+        private void Update()
+        {
+            if (_currentFill >= _fillTarget) return;
+            
+            _currentFill += Time.deltaTime * FillSpeed;
+            _currentFill = _currentFill > _fillTarget? _fillTarget : _currentFill;
+
+            score1.fillAmount = _currentFill;
+            score2.fillAmount = _currentFill;
+            score3.fillAmount = _currentFill;
         }
 
         public void OnGameWin(int score, int level, int lifeWeight, int coinWeight)
@@ -57,6 +76,8 @@ namespace UI
             score2.enabled = score >= 2;
             score3.enabled = score >= 3;
 
+            _fillTarget = 1;
+
             nextButton.interactable = SettingHelper.IsLevelUnlocked(level + 1)
                 .GetOrDefault(false);
 
@@ -70,5 +91,7 @@ namespace UI
             nextButton.gameObject.SetActive(false);
             uiCanvas.enabled = true;
         }
+        
+        private const float FillSpeed = 0.5f;
     }
 }
