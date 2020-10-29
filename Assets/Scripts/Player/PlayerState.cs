@@ -1,4 +1,3 @@
-using System;
 using Manager;
 using UnityEngine;
 using Utils;
@@ -21,6 +20,7 @@ namespace Player
 
         public int Health => _defaultHealth - _totalDamage;
         public float HealthRatio => (float) Health / _defaultHealth;
+        public float CoinRation => _coin > _initialCoin ? 1 : (float) _coin / _initialCoin;
         public float ReturnRate => _defaultReturnRate;
         public int Coin => _coin;
         public int Level => level;
@@ -60,20 +60,6 @@ namespace Player
         {
             if (Health <= 0 && _gameManager.IsGameOnPlay)
                 Messenger.Broadcast(GameEvent.OVER);
-        }
-
-        
-
-        public int GetScore()
-        {
-            var score = Mathf.RoundToInt(
-                ((float) _coin / _initialCoin * CoinWeight
-                 + HealthRatio * HealthWeight)
-                / (HealthWeight + CoinWeight)
-                * 3
-            );
-
-            return score > 3 ? 3 : score;
         }
 
         private void OnDamage(int damage)
@@ -121,7 +107,5 @@ namespace Player
         }
 
         private const string PlayerFeaturesFile = "Plain/Player/level_{0}";
-        private const float HealthWeight = 5;
-        private const float CoinWeight = 1;
     }
 }

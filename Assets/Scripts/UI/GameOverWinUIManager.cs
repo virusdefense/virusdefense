@@ -1,3 +1,5 @@
+using Player;
+using UI.Level;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Messenger;
@@ -10,6 +12,8 @@ namespace UI
         [SerializeField] private Canvas uiCanvas;
         [SerializeField] private GameObject scoreBlock;
         [SerializeField] private Text text;
+        [SerializeField] private ScoreComponent lifeComponent;
+        [SerializeField] private ScoreComponent coinComponent;
         [SerializeField] private Image score1;
         [SerializeField] private Image score2;
         [SerializeField] private Image score3;
@@ -17,8 +21,12 @@ namespace UI
         [SerializeField] private Button nextButton;
         [SerializeField] private Button homeButton;
 
+        private PlayerState _playerState;
+
         private void Awake()
         {
+            _playerState = FindObjectOfType<PlayerState>();
+
             uiCanvas.enabled = false;
 
             againButton.onClick.AddListener(() =>
@@ -34,9 +42,15 @@ namespace UI
             );
         }
 
-        public void OnGameWin(int score, int level)
+        public void OnGameWin(int score, int level, int lifeWeight, int coinWeight)
         {
             text.text = "Game Win!";
+
+            lifeComponent.MultiplierValue = lifeWeight;
+            lifeComponent.TargetFill = _playerState.HealthRatio;
+
+            coinComponent.MultiplierValue = coinWeight;
+            coinComponent.TargetFill = _playerState.CoinRation;
 
             scoreBlock.SetActive(true);
             score1.enabled = score >= 1;
