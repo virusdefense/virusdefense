@@ -13,12 +13,15 @@ namespace InputControllers
         protected bool __Left;
         protected bool __Right;
 
+        protected bool __ZoomIn;
+        protected bool __ZoomOut;
+
         protected float __Scroll;
-
-
 
         protected float vert;
         protected float horz;
+        protected float zoomIn;
+        protected bool zoomOut;
 
         protected float scroll;
 
@@ -45,19 +48,30 @@ namespace InputControllers
             get { return __Right; }
         }
 
+        public bool ZoomIn
+        {
+            get { return __ZoomIn; }
+        }
+
+        public bool ZoomOut
+        {
+            get { return __ZoomOut; }
+        }
+
         public float Scroll
         {
             get { return __Scroll; }
         }
-
 
         public virtual void CheckInput()
         {
             // override with your own code to deal with input
             horz = Input.GetAxis("Horizontal");
             vert = Input.GetAxis("Vertical");
+            zoomIn = Input.GetAxis("ZoomIn");
             scroll = Input.GetAxis("Mouse ScrollWheel");
         }
+
         public virtual float GetHorizontal()
         {
             return horz;
@@ -66,7 +80,10 @@ namespace InputControllers
         {
             return vert;
         }
-
+        public virtual float GetZoomIn()
+        {
+            return zoomIn;
+        }
         public virtual float GetScroll()
         {
             return scroll;
@@ -74,7 +91,6 @@ namespace InputControllers
 
         public virtual Vector3 GetMovementDirectionVector()
         {
-
             if (Left || Right)
             {
                 TEMPVec3.x = horz;
@@ -83,6 +99,11 @@ namespace InputControllers
             if (Up || Down)
             {
                 TEMPVec3.z = vert;
+            }
+
+            if (ZoomIn)
+            {
+                TEMPVec3.y = zoomIn;
             }
 
             if (Scroll !=0)

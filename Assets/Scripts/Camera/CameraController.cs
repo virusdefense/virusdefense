@@ -22,18 +22,24 @@ public class CameraController : MonoBehaviour
     private float rotationY = -90f;
     private float rotationZ = 0f;
 
+    private int fieldOfView = 55;
+
     private float offsetScroll = 0.25f;
     private float offsetPosition = 10f;
 
     //speed
-    private float panSpeed = 30f;
+    private float panSpeed = 20f;
     private float scrollSpeed = 5f;
 
     //scroll param
     private float minY;
     private float maxY;
 
-    // Start is called before the first frame update
+    ////////////////////////
+    private Vector3 originalPosition;
+    private Vector3 currentPosistion;
+    private bool isZoomed;
+
     void Start()
     {
         var board = ReadBoard(level);
@@ -51,51 +57,97 @@ public class CameraController : MonoBehaviour
         m_MainCamera = Camera.main;
         m_MainCamera.enabled = true;
         m_MainCamera.clearFlags = CameraClearFlags.SolidColor;
+        m_MainCamera.fieldOfView = fieldOfView;
         m_MainCamera.transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
         m_MainCamera.transform.position = new Vector3(positionX, positionY, positionZ);
 
         myInputController = new KeyboardInput();
+        isZoomed = false;
 
+        originalPosition= new Vector3(positionX, positionY, positionZ); 
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Debug.Log("" + m_MainCamera.transform.position.x);
-        Debug.Log("" + transform.position.x);
-
         MoveCamera();
-
+        ZoomIn();
     }
 
     protected void MoveCamera()
     {
         myInputController.CheckInput();
+        currentPosistion= m_MainCamera.transform.position;
 
-        if (myInputController.Right && m_MainCamera.transform.position.z <= positionZ + offsetPosition)
-        {
-            m_MainCamera.transform.Translate(Vector3.forward * panSpeed * Time.deltaTime, Space.World);
+        if (!isZoomed) { 
+            if (myInputController.Right && currentPosistion.z <= positionZ + offsetPosition)
+            {
+                m_MainCamera.transform.Translate(Vector3.forward * panSpeed * Time.deltaTime, Space.World);
+            }
+            if (myInputController.Left && currentPosistion.z >= positionZ - offsetPosition)
+            {
+                m_MainCamera.transform.Translate(Vector3.back * panSpeed * Time.deltaTime, Space.World);
+            }
+            if (myInputController.Up && currentPosistion.x >= positionX - offsetPosition)
+            {
+                m_MainCamera.transform.Translate(Vector3.left * panSpeed * Time.deltaTime, Space.World);
+            }
+            if (myInputController.Down && currentPosistion.x <= positionX + offsetPosition / 2)
+            {
+                m_MainCamera.transform.Translate(Vector3.right * panSpeed * Time.deltaTime, Space.World);
+            }
         }
-        if (myInputController.Left && m_MainCamera.transform.position.z >= positionZ - offsetPosition)
+        else if (isZoomed)
         {
-            m_MainCamera.transform.Translate(Vector3.back * panSpeed * Time.deltaTime, Space.World);
-        }
-        if (myInputController.Up && m_MainCamera.transform.position.x >= positionX - offsetPosition)
-        {
-            m_MainCamera.transform.Translate(Vector3.left * panSpeed * Time.deltaTime, Space.World);
-        }
-
-        if (myInputController.Down && m_MainCamera.transform.position.x <= positionX + offsetPosition / 2)
-        {
-            m_MainCamera.transform.Translate(Vector3.right * panSpeed * Time.deltaTime, Space.World);
+            if (myInputController.Right && currentPosistion.z <= positionZ + offsetPosition*2)
+            {
+                m_MainCamera.transform.Translate(Vector3.forward * panSpeed * Time.deltaTime, Space.World);
+            }
+            if (myInputController.Left && currentPosistion.z >= offsetPosition/2)
+            { 
+                m_MainCamera.transform.Translate(Vector3.back * panSpeed * Time.deltaTime, Space.World);
+            }
+            if (myInputController.Up && currentPosistion.x >= 0)
+            {
+                m_MainCamera.transform.Translate(Vector3.left * panSpeed * Time.deltaTime, Space.World);
+            }
+            if (myInputController.Down && currentPosistion.x <= positionX-offsetPosition)
+            {
+                m_MainCamera.transform.Translate(Vector3.right * panSpeed * Time.deltaTime, Space.World);
+            }
         }
 
         Vector3 pos = m_MainCamera.transform.position;
-
         pos.y -= myInputController.Scroll * 1000 * scrollSpeed * Time.deltaTime;
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
 
         m_MainCamera.transform.position = pos;
+    }
+
+    protected void ZoomIn()
+    {
+        Vector3 mousePosition;
+        var positionOnScreen = Input.mousePosition;
+        var ray = Camera.main.ScreenPointToRay(positionOnScreen);
+
+        if (myInputController.ZoomIn && m_MainCamera.transform.rotation.eulerAngles.x != 90) 
+        {
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity) && hit.collider != null)
+            {
+                mousePosition = hit.point;
+                mousePosition.y = minY;
+                m_MainCamera.transform.position = mousePosition;
+                m_MainCamera.transform.rotation = Quaternion.Euler(90, rotationY, rotationZ);
+                isZoomed = true;
+            }
+        }
+
+        else if (myInputController.ZoomOut)
+        {
+            Debug.Log("Space released");
+            m_MainCamera.transform.position = originalPosition;
+            m_MainCamera.transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
+            isZoomed = false;
+        }
     }
 
     private static List<List<char>> ReadBoard(int level)
