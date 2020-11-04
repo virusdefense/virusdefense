@@ -30,7 +30,7 @@ namespace Modifier
             _duration -= deltaTime;
         }
 
-        public float Applay(float featureValue)
+        public float Apply(float featureValue)
         {
             return featureValue * _magnitude;
         }
@@ -42,7 +42,7 @@ namespace Modifier
                 ModifierTarget.ENEMY,
                 ModifierFeature.SPEED,
                 10,
-                -40
+                -0.30f
             );
         }
 
@@ -53,7 +53,7 @@ namespace Modifier
                 ModifierTarget.ENEMY,
                 ModifierFeature.SPEED,
                 20,
-                -60
+                -0.50f
             );
         }
 
@@ -64,7 +64,7 @@ namespace Modifier
                 ModifierTarget.ENEMY,
                 ModifierFeature.DAMAGE,
                 30,
-                -50
+                -0.50f
             );
         }
     }

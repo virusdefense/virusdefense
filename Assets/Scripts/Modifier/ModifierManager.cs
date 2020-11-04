@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Player;
@@ -10,14 +11,15 @@ namespace Modifier
     public class ModifierManager : MonoBehaviour
     {
         private PlayerState _playerState;
+        
         private readonly List<Modifier> _modifiersList = new List<Modifier>();
-        private readonly Dictionary<ModifierTarget, List<Modifier>> _modifiersMap = 
+        private readonly Dictionary<ModifierTarget, List<Modifier>> _modifiersMap =
             new Dictionary<ModifierTarget, List<Modifier>>();
 
         private void Awake()
         {
             _playerState = FindObjectOfType<PlayerState>();
-            
+
             Messenger<ModifierType>.AddListener(GameEvent.MODIFIER_USED, OnModifierUsed);
         }
 
@@ -36,9 +38,16 @@ namespace Modifier
 
         public List<Modifier> GetModifiers(ModifierTarget target, ModifierFeature feature)
         {
-            return _modifiersMap[target] ?? new List<Modifier>()
-                .Where(m => m.Feature == feature)
-                .ToList();
+            try
+            {
+                return _modifiersMap[target]
+                    .Where(m => m.Feature == feature)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                return new List<Modifier>();
+            }
         }
 
         private void OnModifierUsed(ModifierType type)
@@ -48,20 +57,24 @@ namespace Modifier
             var level = SettingHelper.GetModifierLevel(type)
                 .GetOrDefault(0);
             if (level == 0) return;
-            
+
             var modifier = ModifierFactory.GetModifier(type, level);
-            
+
             _modifiersList.Add(modifier);
 
-            var modifiers = _modifiersMap[modifier.Target];
-            if (modifiers == null)
+            List<Modifier> modifiers;
+            try
+            {
+                modifiers = _modifiersMap[modifier.Target];
+            }
+            catch (Exception e)
             {
                 modifiers = new List<Modifier>();
                 _modifiersMap[modifier.Target] = modifiers;
             }
-            
+
             modifiers.Add(modifier);
-            
+
             _playerState.DecreaseModifierUnit(type);
         }
 
@@ -69,6 +82,7 @@ namespace Modifier
         {
             var modifiers = _modifiersMap[modifier.Target];
             modifiers?.Remove(modifier);
+            _modifiersList.Remove(modifier);
         }
     }
 }

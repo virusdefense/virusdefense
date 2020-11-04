@@ -1,3 +1,5 @@
+using System.Linq;
+using Modifier;
 using UnityEngine;
 using Utils;
 
@@ -6,6 +8,8 @@ namespace Enemy
     public class EnemyState : MonoBehaviour
     {
         [SerializeField] private Enemy.Type Type;
+
+        private ModifierManager _modifierManager;
 
         private float _defaultHealth;
         private float _defaultSpeed;
@@ -19,10 +23,24 @@ namespace Enemy
 
         public float Health => _defaultHealth - _totalDamage;
         public float HealthRatio => Health / _defaultHealth;
-        public float Speed => _defaultSpeed;
+
+        public float Speed => _defaultSpeed
+                              + _modifierManager.GetModifiers(ModifierTarget.ENEMY, ModifierFeature.SPEED)
+                                  .Aggregate(0f, (acc, m) =>
+                                      acc + m.Apply(_defaultSpeed)
+                                  );
+
         public float TrialDamage => _defaultTrialDamage;
         public float Cadence => _defaultCadence;
-        public int HealthDamage => _defaultHealthDamage;
+
+        public int HealthDamage => _defaultHealthDamage
+                                   + Mathf.RoundToInt(_modifierManager
+                                       .GetModifiers(ModifierTarget.ENEMY, ModifierFeature.DAMAGE)
+                                       .Aggregate(0f, (acc, m) =>
+                                           acc + m.Apply(_defaultHealthDamage)
+                                       )
+                                   );
+
         public int CoindDrop => _defaultCoinDrop;
         public bool IsMoving => !_isEngaged;
 
@@ -36,6 +54,7 @@ namespace Enemy
 
         public void Awake()
         {
+            _modifierManager = FindObjectOfType<ModifierManager>();
             ResourcesHelper.SetFeaturesFromTextFile(
                 string.Format(EnemyFeaturesFile, Type),
                 SetFeature
