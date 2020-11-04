@@ -138,7 +138,7 @@ namespace Utils.Settings
             );
         }
 
-        public static Optional<int> GetModifierLevel(ModifierType type)
+        public static Optional<int> GetModifierLevel(ModifierType.Type type)
         {
             var key = string.Format(Key.MODIFIER_LEVEL, type);
 
@@ -147,7 +147,7 @@ namespace Utils.Settings
                 : new Optional<int>();
         }
 
-        public static void SetModifierLevel(ModifierType type, int level)
+        public static void SetModifierLevel(ModifierType.Type type, int level)
         {
             PlayerPrefs.SetInt(
                 string.Format(Key.MODIFIER_LEVEL, type),

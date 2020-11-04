@@ -1,3 +1,4 @@
+using System;
 using Manager;
 using Modifier;
 using UnityEngine;
@@ -26,6 +27,11 @@ namespace Player
         public int Coin => _coin;
         public int Level => level;
         public int UnlockNext => _unlockNext;
+
+        private void Update()
+        {
+            Debug.Log($"Unit {_slowDownEnemyUnit}");
+        }
 
         private void Awake()
         {
@@ -63,29 +69,29 @@ namespace Player
                 Messenger.Broadcast(GameEvent.OVER);
         }
 
-        public bool IsModifierAvailable(ModifierType type)
+        public bool IsModifierAvailable(ModifierType.Type type)
         {
             return SettingHelper.GetModifierLevel(type)
                 .GetOrDefault(0) > 0
                 && GetModifierUnit(type) > 0;
         }
 
-        private int GetModifierUnit(ModifierType type)
+        private int GetModifierUnit(ModifierType.Type type)
         {
             switch (type)
             {
-                case ModifierType.SLOW_ENEMY:
+                case ModifierType.Type.SLOW_ENEMY:
                     return _slowDownEnemyUnit;
                 default:
                     return 0;
             }
         }
 
-        public void DecreaseModifierUnit(ModifierType type)
+        public void DecreaseModifierUnit(ModifierType.Type type)
         {
             switch (type)
             {
-              case  ModifierType.SLOW_ENEMY:
+              case  ModifierType.Type.SLOW_ENEMY:
                   _slowDownEnemyUnit--;
                   break;
             }

@@ -20,12 +20,12 @@ namespace Modifier
         {
             _playerState = FindObjectOfType<PlayerState>();
 
-            Messenger<ModifierType>.AddListener(GameEvent.MODIFIER_USED, OnModifierUsed);
+            Messenger<ModifierType.Type>.AddListener(GameEvent.MODIFIER_USED, OnModifierUsed);
         }
 
         private void OnDestroy()
         {
-            Messenger<ModifierType>.RemoveListener(GameEvent.MODIFIER_USED, OnModifierUsed);
+            Messenger<ModifierType.Type>.RemoveListener(GameEvent.MODIFIER_USED, OnModifierUsed);
         }
 
         private void Update()
@@ -50,7 +50,7 @@ namespace Modifier
             }
         }
 
-        private void OnModifierUsed(ModifierType type)
+        private void OnModifierUsed(ModifierType.Type type)
         {
             if (!_playerState.IsModifierAvailable(type)) return;
 

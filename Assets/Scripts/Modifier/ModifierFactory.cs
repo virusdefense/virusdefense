@@ -2,13 +2,13 @@ namespace Modifier
 {
     public static class ModifierFactory
     {
-        public static Modifier GetModifier(ModifierType type, int level)
+        public static Modifier GetModifier(ModifierType.Type type, int level)
         {
             switch (type)
             {
-                case ModifierType.SLOW_ENEMY:
+                case ModifierType.Type.SLOW_ENEMY:
                     return GetSlowDownEnemyModifier(level);
-                case ModifierType.DECREASE_DAMAGE_ENEMY:
+                case ModifierType.Type.DECREASE_DAMAGE_ENEMY:
                     return GetSlowDownEnemyModifier(level);
             }
 
