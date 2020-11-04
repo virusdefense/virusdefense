@@ -5,7 +5,7 @@ namespace Modifier
         private readonly string _name;
         private readonly ModifierTarget _target;
         private readonly ModifierFeature _feature;
-        private int _duration;
+        private float _duration;
         private readonly float _magnitude;
 
         private Modifier(string name, ModifierTarget target, ModifierFeature feature, int duration, float magnitude)
@@ -25,7 +25,7 @@ namespace Modifier
 
         public bool IsExpired => _duration <= 0;
 
-        public void Countdown(int deltaTime)
+        public void Countdown(float deltaTime)
         {
             _duration -= deltaTime;
         }
