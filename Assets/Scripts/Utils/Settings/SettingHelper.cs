@@ -1,4 +1,5 @@
 using System;
+using Modifier;
 using Tower;
 using UnityEngine;
 
@@ -134,6 +135,23 @@ namespace Utils.Settings
             PlayerPrefs.SetInt(
                 Key.TOTAL_SPEND_FOUND,
                 GetTotalSpendsFound().GetOrDefault(0) + spend
+            );
+        }
+
+        public static Optional<int> GetModifierLevel(ModifierType type)
+        {
+            var key = string.Format(Key.MODIFIER_LEVEL, type);
+
+            return PlayerPrefs.HasKey(key)
+                ? new Optional<int>(PlayerPrefs.GetInt(key))
+                : new Optional<int>();
+        }
+
+        public static void SetModifierLevel(ModifierType type, int level)
+        {
+            PlayerPrefs.SetInt(
+                string.Format(Key.MODIFIER_LEVEL, type),
+                level
             );
         }
     }

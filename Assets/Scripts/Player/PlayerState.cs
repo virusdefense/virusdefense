@@ -1,5 +1,5 @@
-using System;
 using Manager;
+using Modifier;
 using UnityEngine;
 using Utils;
 using Utils.Messenger;
@@ -17,6 +17,7 @@ namespace Player
         private int _initialCoin;
         private int _totalDamage;
         private int _unlockNext;
+        private int _slowDownEnemyUnit;
         private GameManager _gameManager;
 
         public int Health => _defaultHealth - _totalDamage;
@@ -60,6 +61,24 @@ namespace Player
         {
             if (Health <= 0 && _gameManager.IsGameOnPlay)
                 Messenger.Broadcast(GameEvent.OVER);
+        }
+
+        public bool IsModifierAvailable(ModifierType type)
+        {
+            return SettingHelper.GetModifierLevel(type)
+                .GetOrDefault(0) > 0
+                && GetModifierUnit(type) > 0;
+        }
+
+        private int GetModifierUnit(ModifierType type)
+        {
+            switch (type)
+            {
+                case ModifierType.SLOW_ENEMY:
+                    return _slowDownEnemyUnit;
+                default:
+                    return 0;
+            }
         }
 
         
@@ -116,6 +135,9 @@ namespace Player
                     break;
                 case "unlockNext":
                     _unlockNext = int.Parse(featureValue);
+                    break;
+                case "slowDownEnemy":
+                    _slowDownEnemyUnit = int.Parse(featureValue);
                     break;
             }
         }

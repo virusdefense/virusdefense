@@ -1,4 +1,5 @@
 health 15
 coin 300
 returnRate 0,6
+slowDownEnemy 1
 unlockNext 2
