@@ -81,6 +81,16 @@ namespace Player
             }
         }
 
+        public void DecreaseModifierUnit(ModifierType type)
+        {
+            switch (type)
+            {
+              case  ModifierType.SLOW_ENEMY:
+                  _slowDownEnemyUnit--;
+                  break;
+            }
+        }
+
         
 
         public int GetScore()

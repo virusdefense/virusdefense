@@ -61,6 +61,8 @@ namespace Modifier
             }
             
             modifiers.Add(modifier);
+            
+            _playerState.DecreaseModifierUnit(type);
         }
 
         private void RemoveModifier(Modifier modifier)
