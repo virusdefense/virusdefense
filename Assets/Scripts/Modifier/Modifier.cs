@@ -8,7 +8,7 @@ namespace Modifier
         private int _duration;
         private readonly float _magnitude;
 
-        public Modifier(string name, ModifierTarget target, ModifierFeature feature, int duration, float magnitude)
+        private Modifier(string name, ModifierTarget target, ModifierFeature feature, int duration, float magnitude)
         {
             _name = name;
             _target = target;
@@ -33,6 +33,39 @@ namespace Modifier
         public float Applay(float featureValue)
         {
             return featureValue * _magnitude;
+        }
+
+        public static Modifier SlowDownEnemyL1()
+        {
+            return new Modifier(
+                "Slow down enemy level 1",
+                ModifierTarget.ENEMY,
+                ModifierFeature.SPEED,
+                10,
+                -40
+            );
+        }
+
+        public static Modifier SlowDownEnemyL2()
+        {
+            return new Modifier(
+                "Slow down enemy level 2",
+                ModifierTarget.ENEMY,
+                ModifierFeature.SPEED,
+                20,
+                -60
+            );
+        }
+
+        public static Modifier DecreaseEnemyDamageL1()
+        {
+            return new Modifier(
+                "Decrease enemy damage level 1",
+                ModifierTarget.ENEMY,
+                ModifierFeature.DAMAGE,
+                30,
+                -50
+            );
         }
     }
 }
