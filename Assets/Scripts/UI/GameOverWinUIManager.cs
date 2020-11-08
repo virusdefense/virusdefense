@@ -2,6 +2,7 @@ using System;
 using Player;
 using UI.Level;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils.Messenger;
 using Utils.Settings;
@@ -21,6 +22,7 @@ namespace UI
         [SerializeField] private Button againButton;
         [SerializeField] private Button nextButton;
         [SerializeField] private Button homeButton;
+        [SerializeField] private Button storeButton;
 
         private PlayerState _playerState;
         private float _currentFill;
@@ -42,6 +44,10 @@ namespace UI
 
             nextButton.onClick.AddListener(() =>
                 Messenger.Broadcast(GameEvent.NEXT_LEVEL)
+            );
+
+            storeButton.onClick.AddListener(() =>
+                SceneManager.LoadScene("Scenes/Store scene")
             );
 
             score1.fillAmount = 0;

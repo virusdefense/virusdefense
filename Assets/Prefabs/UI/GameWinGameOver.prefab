@@ -774,7 +774,7 @@ GameObject:
   - component: {fileID: 9091526954319676320}
   - component: {fileID: 4842151801334841750}
   m_Layer: 5
-  m_Name: Button
+  m_Name: StoreButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1202,6 +1202,7 @@ MonoBehaviour:
   againButton: {fileID: 5570480600296018492}
   nextButton: {fileID: 8368914289133558133}
   homeButton: {fileID: 7289199259728472561}
+  storeButton: {fileID: 4842151801334841750}
 --- !u!1 &8294615809165146182
 GameObject:
   m_ObjectHideFlags: 0
