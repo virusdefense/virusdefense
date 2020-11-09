@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Modifier;
 using UnityEngine;
@@ -24,22 +25,20 @@ namespace Enemy
         public float Health => _defaultHealth - _totalDamage;
         public float HealthRatio => Health / _defaultHealth;
 
-        public float Speed => _defaultSpeed
-                              + _modifierManager.GetModifiers(ModifierTarget.ENEMY, ModifierFeature.SPEED)
-                                  .Aggregate(0f, (acc, m) =>
-                                      acc + m.Apply(_defaultSpeed)
-                                  );
+        public float Speed => _modifierManager.GetModifiers(ModifierTarget.ENEMY, ModifierFeature.SPEED)
+            .Aggregate(_defaultSpeed, (speed, m) =>
+                speed + m.Apply(speed)
+            );
 
         public float TrialDamage => _defaultTrialDamage;
         public float Cadence => _defaultCadence;
 
-        public int HealthDamage => _defaultHealthDamage
-                                   + Mathf.RoundToInt(_modifierManager
-                                       .GetModifiers(ModifierTarget.ENEMY, ModifierFeature.DAMAGE)
-                                       .Aggregate(0f, (acc, m) =>
-                                           acc + m.Apply(_defaultHealthDamage)
-                                       )
-                                   );
+        public int HealthDamage => Mathf.RoundToInt(_modifierManager
+            .GetModifiers(ModifierTarget.ENEMY, ModifierFeature.DAMAGE)
+            .Aggregate((float) _defaultHealthDamage, (health, m) =>
+                health + m.Apply(health)
+            )
+        );
 
         public int CoindDrop => _defaultCoinDrop;
         public bool IsMoving => !_isEngaged;
