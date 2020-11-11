@@ -139,7 +139,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Tower
+  m_Text: 'Modifier
 
     2'
 --- !u!1 &5568837107740892161
@@ -174,9 +174,9 @@ RectTransform:
   m_Father: {fileID: 3907056676224583851}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 10, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8652320684032277577
@@ -346,6 +346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5682983411156950079}
+  - component: {fileID: 5352414435994461330}
   m_Layer: 5
   m_Name: Modifier Upgrade Button
   m_TagString: Untagged
@@ -374,6 +375,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5352414435994461330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5886502841019382741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08bead0bcf7f419fa65140a29e0ed17c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  buyButton: {fileID: 7717702578798004884}
+  buyPrice: {fileID: 2469566328126696991}
+  description: {fileID: 1799572710994480099}
 --- !u!1 &7041426507668204416
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,9 +611,9 @@ RectTransform:
   m_Father: {fileID: 3907056676224583851}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 30, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3352843624461608547

@@ -1,0 +1,3 @@
+name Slow Down Enemy
+description Decrease for 10 seconds, by 30 percent, the speed of all enemies.
+unlockPrice 2
