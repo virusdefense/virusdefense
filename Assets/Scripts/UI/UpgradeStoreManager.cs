@@ -1,5 +1,5 @@
+using Controller;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils.Messenger;
 using Utils.Settings;
@@ -15,9 +15,7 @@ namespace UI
         {
             Messenger.AddListener(GameEvent.UPGRADE_PURCHASED, OnPurchased);
 
-            homeButton.onClick.AddListener(() =>
-                SceneManager.LoadScene("Scenes/Select Level Scene")
-            );
+            homeButton.onClick.AddListener(UpgradeStoreController.LoadSelectLevel);
 
             UpdateUI();
         }

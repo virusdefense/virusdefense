@@ -18,7 +18,7 @@ namespace Tower
 
         public void Shoot(Transform target, float speed, float damage, float range = 0)
         {
-            _targetPosition = target.position;
+            _targetPosition = getTargetPosition(target);
             _speed = speed;
             _damage = damage;
             _range = range;
@@ -47,6 +47,17 @@ namespace Tower
             // heavy mode
             else if (_range != 0)
                 Detonation();
+        }
+
+        private Vector3 getTargetPosition(Transform target)
+        {
+            var targetPosition = target.position;
+
+            return new Vector3(
+                targetPosition.x,
+                targetPosition.y - target.localScale.y / 2,
+                targetPosition.z
+            );
         }
 
         private void Detonation()
