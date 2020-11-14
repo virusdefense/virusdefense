@@ -32,7 +32,8 @@ namespace Manager
         private void LateUpdate()
         {
             Time.timeScale = _state == GameState.Play ||
-                             _state == GameState.TowerMenuOpen
+                             _state == GameState.TowerMenuOpen ||
+                             _state == GameState.Won
                 ? 1
                 : 0;
 

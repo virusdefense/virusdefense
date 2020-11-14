@@ -1,0 +1,8 @@
+price 150
+name Heavy
+fireRate 0,7
+range 8
+bulletSpeed 45
+bulletDamage 7
+bulletRange 4
+unlockPrice 3

@@ -159,7 +159,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -267,7 +267,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3faa68d4e2f05f04786133598667ac36, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bd2fbccf65c2e9c4580a8cbdcb436602, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -450,8 +450,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.9372549, b: 0.9372549, a: 1}
+    m_PressedColor: {r: 0.9019608, g: 0.7019608, b: 0.7019608, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44fd471a5c8457c8f02bd0673bec0cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   fea1: {fileID: 6220722702261476080}
   fea2: {fileID: 7484779150395723702}
   fea3: {fileID: 8310904697894268450}
@@ -1139,12 +1139,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c814685cb6633d398600d4268cbb77a, type: 3}
---- !u!224 &3570736893501498716 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 834874840200657307, guid: 0c814685cb6633d398600d4268cbb77a,
-    type: 3}
-  m_PrefabInstance: {fileID: 4187182683599396039}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8310904697894268450 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5282053574111998693, guid: 0c814685cb6633d398600d4268cbb77a,
@@ -1157,6 +1151,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a8cfe581d8741808b68959dfe5f1fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &3570736893501498716 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 834874840200657307, guid: 0c814685cb6633d398600d4268cbb77a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4187182683599396039}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4499576167654157522
 PrefabInstance:
   m_ObjectHideFlags: 0

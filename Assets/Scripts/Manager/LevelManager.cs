@@ -38,13 +38,25 @@ namespace Manager
 
         private void OnGameWin()
         {
-            var score = _playerState.GetScore();
+            var lifeRatio = _playerState.HealthRatio;
+            var coinRatio = _playerState.CoinRation;
+
+            var score = GetScore(lifeRatio, coinRatio);
 
             EndLevelSaves(score);
 
-            _gameOverWinUIManager.OnGameWin(score, _playerState.level);
+            _gameOverWinUIManager.OnGameWin(score, _playerState.level, LifeWeight, CoinWeight);
 
             _isDone = true;
+        }
+
+        private static int GetScore(float lifeRatio, float coinRatio)
+        {
+            return Mathf.RoundToInt(
+                3
+                * (lifeRatio * LifeWeight + coinRatio * coinRatio)
+                / (LifeWeight + CoinWeight)
+            );
         }
 
         private void OnGameOver()
@@ -101,5 +113,7 @@ namespace Manager
         }
 
         private const string SceneName = "Scenes/Levels/Level_{0}";
+        private const int LifeWeight = 5;
+        private const int CoinWeight = 1;
     }
 }
