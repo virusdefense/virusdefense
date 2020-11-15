@@ -35,6 +35,9 @@ public class CameraController : MonoBehaviour
     private float minY;
     private float maxY;
 
+    private string backgroundColor = "#6A635F";
+    private Color color;
+
     ////////////////////////
     private Vector3 originalPosition;
     private Vector3 currentPosistion;
@@ -57,6 +60,8 @@ public class CameraController : MonoBehaviour
         m_MainCamera = Camera.main;
         m_MainCamera.enabled = true;
         m_MainCamera.clearFlags = CameraClearFlags.SolidColor;
+        ColorUtility.TryParseHtmlString(backgroundColor, out color);
+        m_MainCamera.backgroundColor = color;
         m_MainCamera.fieldOfView = fieldOfView;
         m_MainCamera.transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
         m_MainCamera.transform.position = new Vector3(positionX, positionY, positionZ);
