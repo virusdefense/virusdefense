@@ -1,8 +1,8 @@
+using Controller;
 using Tower;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
-using Utils.Messenger;
 using Utils.Settings;
 
 namespace UI
@@ -18,6 +18,8 @@ namespace UI
         [SerializeField] public Button buyButton;
         [SerializeField] public Text buyPrice;
 
+        private UpgradeStoreController _controller;
+
         private float _defaultFireRate;
         private float _defaultRange;
         private float _bulletSpeed;
@@ -30,18 +32,14 @@ namespace UI
 
         private void Awake()
         {
-            buyButton.onClick.AddListener(OnClick);
+            _controller = FindObjectOfType<UpgradeStoreController>();
 
-            UpdateUI();
-        }
+            buyButton.onClick.AddListener(() =>
+            {
+                UpgradeStoreController.Unlock(type, _level, _unlockPrice);
+                UpdateUI();
+            });
 
-        private void OnClick()
-        {
-            SettingHelper.IncreaseSpendsFound(_unlockPrice);
-            SettingHelper.SetUnlockedTowerLevel(type, _level);
-
-            Messenger.Broadcast(GameEvent.UPGRADE_PURCHASED);
-            
             UpdateUI();
         }
 
