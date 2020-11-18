@@ -89,6 +89,7 @@ public class BoardBuilder : MonoBehaviour
         }
 
         var realWorldPaths = paths
+            .Where(path => path != null)
             .Select(path => path
                 .Select(point => point.RealWorldPosition()).ToList()
             ).ToList();
