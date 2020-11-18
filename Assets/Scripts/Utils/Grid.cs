@@ -64,7 +64,7 @@ namespace Utils
 
         public Vector3 GetRealWorldPosition(int x, int z)
         {
-            return new Vector3(x + 0.5f, 0, z + 0.5f) * _cellSide + _origin;
+            return new Vector3(x + 1, 0, z + 0.5f) * _cellSide + _origin;
         }
 
         public Vector2Int GetGridCords(Vector3 position)
