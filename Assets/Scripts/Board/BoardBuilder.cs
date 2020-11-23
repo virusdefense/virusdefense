@@ -62,7 +62,7 @@ public class BoardBuilder : MonoBehaviour
             }
         }
 
-        _pathFinding = new PathFinding(pathGrid, isDebug: true);
+        _pathFinding = new PathFinding(pathGrid);
 
         foreach (var spawnPoint in spawnPoints)
         {
@@ -72,6 +72,7 @@ public class BoardBuilder : MonoBehaviour
             }
         }
 
+        /*
         foreach (var path in paths)
         {
             if (path == null)
@@ -87,6 +88,7 @@ public class BoardBuilder : MonoBehaviour
                 );
             }
         }
+        */
 
         var realWorldPaths = paths
             .Where(path => path != null)
