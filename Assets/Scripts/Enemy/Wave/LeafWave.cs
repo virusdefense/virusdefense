@@ -8,7 +8,8 @@ namespace Enemy.Wave
     {
         private readonly float _waveDuration;
         private float _countDown;
-        private bool _isSpawned;
+        private bool _isStarted;
+        private bool _isCompleted;
 
         private readonly EnemySpawner _enemySpawner;
         private readonly Dictionary<Enemy.Type, int> _enemies;
@@ -23,12 +24,12 @@ namespace Enemy.Wave
 
         public bool IsCompleted()
         {
-            return _isSpawned;
+            return _isCompleted;
         }
 
         public bool IsStarted()
         {
-            return _isSpawned;
+            return _isStarted;
         }
 
         public int NumberOfTotalWaves()
@@ -38,22 +39,22 @@ namespace Enemy.Wave
 
         public int NumberOfPendingWaves()
         {
-            return _isSpawned ? 0 : 1;
+            return _isCompleted ? 0 : 1;
         }
 
         public int NumberOfSpawnedWaves()
         {
-            return _isSpawned ? 1 : 0;
+            return _isCompleted ? 1 : 0;
         }
 
         public int NumberOfStartedWaves()
         {
-            return _isSpawned ? 1 : 0;
+            return _isStarted ? 1 : 0;
         }
 
         public void Spawn(float deltaTime)
         {
-            if (_isSpawned)
+            if (_isCompleted)
                 return;
 
             _countDown -= deltaTime;
@@ -61,10 +62,15 @@ namespace Enemy.Wave
             if (_countDown >= 0)
                 return;
 
-            foreach (var enemyData in _enemies)
-                _enemySpawner.Spawn(enemyData.Key, enemyData.Value, _waveDuration / enemyData.Value);
+            if (!_isStarted)
+            {
+                foreach (var enemyData in _enemies)
+                    _enemySpawner.Spawn(enemyData.Key, enemyData.Value, _waveDuration / enemyData.Value);
+                _isStarted = true;
+            }
 
-            _isSpawned = true;
+            if (_countDown + _waveDuration <= 0)
+                _isCompleted = true;
         }
 
         public override string ToString()
