@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Controller;
 using Modifier;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,11 +32,7 @@ namespace UI.Store.Modifiers
 
         private void OnClick()
         {
-            SettingHelper.IncreaseSpendsFound(_unlockPrice);
-            SettingHelper.SetModifierLevel(type, _level);
-
-            Messenger.Broadcast(GameEvent.UPGRADE_PURCHASED);
-
+            UpgradeStoreController.Unlock(type, _level, _unlockPrice);
             UpdateUI();
         }
 
