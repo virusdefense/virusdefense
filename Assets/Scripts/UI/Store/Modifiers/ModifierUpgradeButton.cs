@@ -4,7 +4,6 @@ using Modifier;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
-using Utils.Messenger;
 using Utils.Settings;
 
 namespace UI.Store.Modifiers
@@ -26,14 +25,16 @@ namespace UI.Store.Modifiers
         {
             Debug.Log("Modifier button");
             buyButton.onClick.AddListener(OnClick);
+        }
 
+        private void LateUpdate()
+        {
             UpdateUI();
         }
 
         private void OnClick()
         {
             UpgradeStoreController.Unlock(type, _level, _unlockPrice);
-            UpdateUI();
         }
 
         private void UpdateUI()

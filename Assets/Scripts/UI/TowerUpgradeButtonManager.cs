@@ -1,8 +1,10 @@
+using System;
 using Controller;
 using Tower;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using Utils.Messenger;
 using Utils.Settings;
 
 namespace UI
@@ -37,10 +39,12 @@ namespace UI
             buyButton.onClick.AddListener(() =>
             {
                 UpgradeStoreController.Unlock(type, _level, _unlockPrice);
-                UpdateUI();
             });
+        }
 
-            UpdateUI();
+        private void LateUpdate()
+        {
+           UpdateUI(); 
         }
 
         private void UpdateUI()

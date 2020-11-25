@@ -1,7 +1,6 @@
 using Controller;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils.Messenger;
 using Utils.Settings;
 
 namespace UI
@@ -13,10 +12,11 @@ namespace UI
 
         private void Awake()
         {
-            Messenger.AddListener(GameEvent.UPGRADE_PURCHASED, OnPurchased);
-
             homeButton.onClick.AddListener(UpgradeStoreController.LoadSelectLevel);
+        }
 
+        private void LateUpdate()
+        {
             UpdateUI();
         }
 
@@ -24,16 +24,6 @@ namespace UI
         {
             availableFounds.text = SettingHelper.GetAvailableFounds()
                 .ToString();
-        }
-
-        private void OnDestroy()
-        {
-            Messenger.RemoveListener(GameEvent.UPGRADE_PURCHASED, OnPurchased);
-        }
-
-        private void OnPurchased()
-        {
-            UpdateUI();
         }
     }
 }

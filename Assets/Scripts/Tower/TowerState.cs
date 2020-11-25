@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 using Utils;
 using Utils.Messenger;
@@ -42,6 +43,13 @@ namespace Tower
                 string.Format(TowerFeatureFile, type, towerLevel),
                 SetFeature
             );
+
+            if (FindObjectOfType<PlayerState>().Coin < Price)
+            {
+                Debug.LogError("Not enough founds");
+                Destroy(gameObject);
+                return;
+            }
 
             Messenger<int>.Broadcast(GameEvent.TOWER_CREATED, Price);
         }
