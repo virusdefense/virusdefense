@@ -109,7 +109,7 @@ namespace Utils.Settings
             var founds = 0;
             var level = 1;
 
-            while (IsLevelCompleted(level).GetOrDefault(false))
+            while (IsLevelUnlocked(level).GetOrDefault(level == 1))
             {
                 founds += GetLevelScore(level).GetOrDefault(0);
                 level++;
